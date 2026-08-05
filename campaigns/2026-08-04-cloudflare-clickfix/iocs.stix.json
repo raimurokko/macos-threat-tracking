@@ -1,0 +1,282 @@
+{
+  "type": "bundle",
+  "id": "bundle--c900b2e1-b00a-4ba0-a207-c7cf4dbfa6e7",
+  "objects": [
+    {
+      "type": "identity",
+      "spec_version": "2.1",
+      "id": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "name": "Novum Analytica GmbH",
+      "identity_class": "organization",
+      "sectors": [
+        "technology"
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--09fa2ac0-35f4-4b11-87b4-b315cefe861a",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "ClickFix Stage-1 Gating C2 (enter-pverif-code.info)",
+      "description": "Stage-1 gating/tracking endpoint. Returns 'ok' exactly once per victim token, then unlocks stage 2.",
+      "indicator_types": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'enter-pverif-code.info']",
+      "valid_from": "2026-08-04T14:42:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ],
+      "confidence": 85
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--8d6160a9-6e45-41eb-9276-d60b0916d152",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "ClickFix Stage-1 gating URL with victim token",
+      "description": "Per-victim tokenised URL observed in clipboard payload 2026-08-04.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'http://enter-pverif-code.info/p/b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab']",
+      "valid_from": "2026-08-04T14:42:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ],
+      "confidence": 85
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--a3d56b73-8a38-45a9-a286-563942c47a20",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "ClickFix Stage-2 loader host (ferncurrent14.com)",
+      "description": "Stage-2 payload host. Content piped directly into zsh (fileless in-memory execution).",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'ferncurrent14.com']",
+      "valid_from": "2026-08-04T14:42:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ],
+      "confidence": 85
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--c194c332-3ee4-410f-b560-65e80a1f661f",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "ClickFix Stage-2 loader URL",
+      "description": "Stage-2 URL, base64-wrapped inside stage-1 command.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://ferncurrent14.com/curl/a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2']",
+      "valid_from": "2026-08-04T14:42:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ],
+      "confidence": 85
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--7c8b1e08-cbb8-49b9-bc10-8f3bacab316d",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "Clipboard payload marker - variable prefix",
+      "description": "Session marker prepended to clipboard command.",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES '_7dcf=af7d6e2e6aa1']",
+      "valid_from": "2026-08-04T14:42:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ],
+      "confidence": 85
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--f10fc8bf-6033-4a04-a1a9-b89257d6fc0e",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "Behavioural: eval of base64-decoded printf in shell history",
+      "description": "Generic ClickFix macOS execution pattern.",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[process:command_line MATCHES 'eval \\\\\"\\\\$\\\\(printf .{0,40}base64 -d\\\\)\\\\\"']",
+      "valid_from": "2026-08-04T14:42:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ],
+      "confidence": 85
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--8c56fd1a-eb6e-4e32-9d3c-f2e8c3f77118",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "Behavioural: curl output piped to zsh",
+      "description": "Fileless stage-2 execution.",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[process:command_line MATCHES 'curl -s .{0,200}\\\\| ?zsh']",
+      "valid_from": "2026-08-04T14:42:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ],
+      "confidence": 85
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "name": "ClickFix (fake CAPTCHA clipboard hijack), macOS variant",
+      "description": "Victim is shown a fake Cloudflare 'human verification' overlay instructing Cmd+Space -> Terminal -> Cmd+V -> Enter. The page writes an obfuscated shell command to the clipboard; the victim executes it under their own user context, bypassing Gatekeeper, XProtect and browser download controls.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1204.004",
+          "url": "https://attack.mitre.org/techniques/T1204/004/"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1059.004"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1027.013"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1105"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1555.001"
+        }
+      ]
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--b49df244-664f-4ddd-8cdd-6d691d7f34b9",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--09fa2ac0-35f4-4b11-87b4-b315cefe861a",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--199ac423-c18b-43e8-9941-7dd4ce4671e4",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--8d6160a9-6e45-41eb-9276-d60b0916d152",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--619b221c-5952-476f-8f6d-1c213475f1cc",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--a3d56b73-8a38-45a9-a286-563942c47a20",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--67173d03-2e04-4d29-b934-b52ef1554fd4",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--c194c332-3ee4-410f-b560-65e80a1f661f",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--be1f7da7-e0bb-4cd5-8100-5c7c376589e1",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--7c8b1e08-cbb8-49b9-bc10-8f3bacab316d",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--50b733f5-f8e6-4afb-bcd5-3c5f2846f675",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--f10fc8bf-6033-4a04-a1a9-b89257d6fc0e",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--eedf5744-89fc-4a55-9f88-4cf43e3bef1d",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--8c56fd1a-eb6e-4e32-9d3c-f2e8c3f77118",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    }
+  ]
+}

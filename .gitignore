@@ -1,0 +1,15 @@
+# Never commit captured payloads or analysis artefacts
+artifacts/
+flows/
+*.bin
+*.pcap
+*.flow
+decoded.json
+*.zip
+*.dmg
+*.pkg
+
+__pycache__/
+*.pyc
+.DS_Store
+artifacts/

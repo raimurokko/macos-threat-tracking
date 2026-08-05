@@ -1,0 +1,12 @@
+type,value,role,confidence,first_seen,tlp,notes
+domain,enter-pverif-code.info,c2-gating,high,2026-08-04,CLEAR,"Stage-1 Gating/Tracking. Antwortet einmalig mit 'ok'."
+url,http://enter-pverif-code.info/p/b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab,c2-gating,high,2026-08-04,CLEAR,"Opferindividuelles Token; Klartext-HTTP."
+domain,ferncurrent14.com,payload-host,high,2026-08-04,CLEAR,"Stage-2 Loader; Inhalt wird direkt nach zsh gepiped."
+url,https://ferncurrent14.com/curl/a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2,payload-host,high,2026-08-04,CLEAR,"Stage-2 Payload-URL (base64-verpackt in Stage 1)."
+token,b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab,victim-token,high,2026-08-04,CLEAR,"SHA256-foermiges Opfertoken im Stage-1-Pfad."
+token,a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2,payload-token,high,2026-08-04,CLEAR,"Pfadkomponente Stage 2."
+string,_7dcf=af7d6e2e6aa1,clipboard-marker,medium,2026-08-04,CLEAR,"Variablenpraefix im Clipboard-Kommando; Kampagnen-Session-Marker."
+string,_xr=$(curl -s,clipboard-marker,medium,2026-08-04,CLEAR,"Wegwerf-Variablenname Stage 1."
+behaviour,"eval \"$(printf '%s' '<base64>'|base64 -d)\"",execution,high,2026-08-04,CLEAR,"ClickFix-Ausfuehrungsmuster macOS."
+behaviour,"openssl base64 -d -A",obfuscation,medium,2026-08-04,CLEAR,"Zweite Dekodierschicht; openssl statt base64 zur Signatur-Umgehung."
+behaviour,"curl -s <url> | zsh",execution,high,2026-08-04,CLEAR,"Fileless Stage-2-Ausfuehrung, kein Schreibvorgang auf Platte."

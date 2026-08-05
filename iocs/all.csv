@@ -1,0 +1,8 @@
+campaign,type,value,role,status,confidence,first_seen,last_checked,notes
+2026-08-04-cloudflare-clickfix,domain,enter-pverif-code.info,c2-gating,active,high,2026-08-04,2026-08-04,"Stage-1 gate; returns 'ok' once per victim token"
+2026-08-04-cloudflare-clickfix,url,http://enter-pverif-code.info/p/b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab,c2-gating,expired,high,2026-08-04,2026-08-04,"Per-victim token, session-scoped, already burned"
+2026-08-04-cloudflare-clickfix,domain,ferncurrent14.com,payload-host,active,high,2026-08-04,2026-08-04,"Stage-2 loader host"
+2026-08-04-cloudflare-clickfix,url,https://ferncurrent14.com/curl/a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2,payload-host,active,high,2026-08-04,2026-08-04,"Stage-2 payload; piped to zsh, campaign-scoped path"
+2026-08-04-cloudflare-clickfix,string,_7dcf=af7d6e2e6aa1,clipboard-marker,active,medium,2026-08-04,2026-08-04,"Session marker prepended to clipboard command"
+2026-08-04-cloudflare-clickfix,behaviour,openssl base64 -d -A,obfuscation,active,medium,2026-08-04,2026-08-04,"Second decode layer; avoids the obvious 'base64 -d' string"
+2026-08-04-cloudflare-clickfix,behaviour,curl -s <url> | zsh,execution,active,high,2026-08-04,2026-08-04,"Fileless stage-2 execution"

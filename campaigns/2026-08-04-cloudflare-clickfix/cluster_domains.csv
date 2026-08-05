@@ -1,0 +1,31 @@
+type,value,role,confidence,first_seen,tlp,notes
+domain,betensured-tips.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (3483 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,borrovnou4421.icu,attacker-infra,medium,2026-08-04,CLEAR,"Angreiferregistriert, 2 Tage alt. Rolle aus Alter und Antwortgroesse abgeleitet, nicht verifiziert."
+domain,coogeechamber.com.au,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (984 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,danielklijn.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (2945 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,determinedresults.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (2964 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,enter-press-cdn.com,attacker-infra,medium,2026-08-04,CLEAR,"Angreiferregistriert, 2 Tage alt. Rolle aus Alter und Antwortgroesse abgeleitet, nicht verifiziert."
+domain,enter-pverif-code.info,c2-gating,high,2026-08-04,CLEAR,Stage-1 Gating; bereits in iocs.csv dieses Falls.
+domain,essentiel-leman.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (2740 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,ferncurrent14.com,payload-host,high,2026-08-04,CLEAR,Stage-2 Loader; bereits in iocs.csv dieses Falls. Bindeglied zwischen Einzelfall und Batch.
+domain,general-sample.space,attacker-infra,medium,2026-08-04,CLEAR,"Angreiferregistriert, 4 Tage alt. Rolle aus Alter und Antwortgroesse abgeleitet, nicht verifiziert."
+domain,glentraverse.com,attacker-infra,medium,2026-08-04,CLEAR,"Angreiferregistriert, 1 Tage alt. Rolle aus Alter und Antwortgroesse abgeleitet, nicht verifiziert."
+domain,globalprotection.services,lure-host,medium,2026-08-04,CLEAR,Typosquat GlobalProtect-VPN; angreifereigen. Am 04.08. 18:05 UTC: 404/521.
+domain,indusrocktool.co.in,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (2314 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,lexingtoncancerfoundation.org,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (3404 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,liobet.org,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (2932 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,makeverizyjar.info,c2-gating,medium,2026-08-04,CLEAR,"Vermuteter Schwester-Gate: 0 Tage alt, identische Antwortlaenge 294 B wie enter-pverif-code.info."
+domain,mca.ca,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (2429 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,minisa.be,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (841 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,mon-banana-06.cfd,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (218 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,muhammedmuheisen.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (3360 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,paloaltopnetwork.site,lure-host,medium,2026-08-04,CLEAR,Typosquat fuer paloaltonetworks.com; angreifereigen. Am 04.08. 18:05 UTC: 522.
+domain,regenerate5141.icu,attacker-infra,medium,2026-08-04,CLEAR,"Angreiferregistriert, 6 Tage alt. Rolle aus Alter und Antwortgroesse abgeleitet, nicht verifiziert."
+domain,soyseaw.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (1323 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,synergytms.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (1846 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,thetayf.com,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (3099 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,thu-ipad-03.cfd,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (201 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,ubiqueags.org,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (671 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+domain,v-k.com.ua,lure-delivery,medium,2026-08-04,CLEAR,Kompromittiert. Pfad /vcapcha.ps1 belegt die Windows-Variante derselben Kampagne.
+domain,wijnbarvicini.nl,lure-delivery,low,2026-08-04,CLEAR,"Legitime Website (419 Tage alt), mutmasslich kompromittiert. NICHT pauschal blocken - Betreiber ist Geschaedigter. Als verdaechtig eingereicht, Overlay nicht selbst bestaetigt."
+url,http://v-k.com.ua/vcapcha.ps1,windows-variant,medium,2026-08-04,CLEAR,PowerShell-Datei mit Fake-Captcha-Namen; Windows-Arm derselben Technik.

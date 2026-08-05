@@ -1,0 +1,118 @@
+title: macOS ClickFix - Terminal-Ausfuehrung eines Clipboard-Loaders
+id: 5c1f3a7e-9b24-4d61-8a0f-2e7c41d9b3f8
+status: experimental
+description: >
+  Erkennt das ClickFix-Ausfuehrungsmuster auf macOS: Der Nutzer fuegt ein
+  obfuskiertes Shell-Kommando aus der Zwischenablage in Terminal.app ein.
+  Charakteristisch ist ein eval ueber ein base64-dekodiertes printf/echo,
+  gefolgt vom Nachladen einer zweiten Stufe per curl direkt in eine Shell.
+author: Novum Analytica GmbH
+date: 2026-08-04
+references:
+    - https://attack.mitre.org/techniques/T1204/004/
+    - https://www.ncsc.admin.ch/ncsc/en/home/aktuell/im-fokus/2026/wochenrueckblick_8.html
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_eval_b64:
+        CommandLine|contains:
+            - 'eval "$(printf'
+            - 'eval $(printf'
+            - 'eval "$(echo'
+        CommandLine|contains|all:
+            - 'base64'
+            - '-d'
+    selection_openssl_b64:
+        CommandLine|contains: 'openssl base64 -d -A'
+    selection_curl_to_shell:
+        CommandLine|contains:
+            - 'curl -s'
+            - 'curl -fsSL'
+            - 'curl -sL'
+        CommandLine|contains|all:
+            - '|'
+        CommandLine|re: '\|\s*(z|ba)?sh\b'
+    parent_interactive:
+        ParentImage|endswith:
+            - '/Terminal'
+            - '/iTerm2'
+            - '/zsh'
+            - '/bash'
+    filter_devtools:
+        CommandLine|contains:
+            - '/usr/local/Homebrew/'
+            - '.git/hooks/'
+            - '/opt/homebrew/Library/'
+    condition: (selection_eval_b64 or selection_openssl_b64 or (selection_curl_to_shell and parent_interactive)) and not filter_devtools
+fields:
+    - CommandLine
+    - ParentImage
+    - User
+falsepositives:
+    - Entwickler-Bootstrapper und Installationsskripte (Homebrew, rustup, nvm)
+    - Interne Provisionierungsskripte
+level: high
+tags:
+    - attack.execution
+    - attack.t1204.004
+    - attack.t1059.004
+    - attack.defense_evasion
+    - attack.t1027.013
+---
+title: ClickFix Kampagnen-Infrastruktur - Netzwerkkontakt
+id: 8e40b6d2-1c73-4f95-a3d8-6b25f0c7ae14
+status: experimental
+description: Kontakt zu bekannter Stage-1-/Stage-2-Infrastruktur der ClickFix-Kampagne vom 2026-08-04.
+author: Novum Analytica GmbH
+date: 2026-08-04
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - 'enter-pverif-code.info'
+            - 'ferncurrent14.com'
+    condition: selection
+fields:
+    - QueryName
+    - Image
+    - User
+falsepositives:
+    - Keine bekannt
+level: critical
+tags:
+    - attack.command_and_control
+    - attack.t1105
+---
+title: ClickFix Stage-2 - Proxy/Web-Request auf Loader-Pfad
+id: 2a9d5b81-7e36-40c2-9f14-c8b3d6e05a77
+status: experimental
+description: HTTP(S)-Request auf die bekannten Stage-1-/Stage-2-URLs der Kampagne.
+author: Novum Analytica GmbH
+date: 2026-08-04
+logsource:
+    category: proxy
+detection:
+    selection_host:
+        c-uri|contains:
+            - 'enter-pverif-code.info/p/'
+            - 'ferncurrent14.com/curl/'
+    selection_token:
+        c-uri|contains:
+            - 'b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab'
+            - 'a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2'
+    selection_ua:
+        cs-user-agent|startswith: 'curl/'
+        c-uri|contains: '/curl/'
+    condition: 1 of selection_*
+fields:
+    - c-uri
+    - cs-user-agent
+    - src_ip
+falsepositives:
+    - Keine bekannt
+level: critical
+tags:
+    - attack.command_and_control
+    - attack.t1105
