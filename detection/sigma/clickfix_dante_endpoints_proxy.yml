@@ -5,6 +5,9 @@ description: >
   Requests to the stage-3 delivery path and to the campaign's conversion-tracking
   beacon. The beacon fires when the victim pastes the command, before any payload
   runs - so a hit here can precede the infection rather than confirm it.
+references:
+    - https://github.com/raimurokko/macos-threat-tracking/blob/main/campaigns/2026-08-04-cloudflare-clickfix/payload_analysis.md
+    - https://bazaar.abuse.ch/sample/29be0f56275f051181ea3ec37ddc3d3807cde34cb65de855709fae0e13786a40/
 author: Novum Analytica GmbH
 date: 2026-08-06
 logsource:
