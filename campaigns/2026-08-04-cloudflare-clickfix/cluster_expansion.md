@@ -133,11 +133,27 @@ Two consequences:
    an investigator nothing; an unproxied origin IP identifies a hosting provider that can
    be served a subscriber-data request. For the two gates, that door is open.
 
-**What this does *not* say.** The AS is registered in the Seychelles and its netblocks
-are allocated under a Turkish registration. Both are registry facts. Neither is a server
-location, and neither says anything whatsoever about who operates the campaign.
-Infrastructure is rented. The useful part is the *provider*, not the flag — see also the
-scope note in `writeup.md`.
+**What this does *not* say.** Registry country fields are not locations. The cleanest way
+to see that is to collect them: for these same two origin IPs, four sources give four
+different countries.
+
+| Source | Country |
+|---|---|
+| Registration of AS202412 | SC — Seychelles |
+| RIPE maintainer of the netblocks (`lir-tr-mgn-1-MNT`) | TR — Turkey |
+| `country:` field in the RIPE `inetnum` object | DE — Germany |
+| AlienVault OTX annotation | GB — United Kingdom |
+
+None of these is false. The AS is registered in the Seychelles, the address space is
+administered through a Turkish LIR, the registrant states a German address, and OTX reads
+a stale database from when `158.94.0.0/16` was UK academic space — which also means the
+OTX value should not be relied on at all.
+
+Verified against live BGP data (RIPEstat) and Team Cymru on 2026-08-06: both prefixes are
+announced by **AS202412**, and the RIPE `inetnum` objects for both carry `netname:
+OMEGATECH`, org `ORG-OL329-RIPE`. That is the stable part, and it is the part without a
+country attached. Infrastructure is rented; the useful finding is the *provider*, not the
+flag — see also the scope note in `writeup.md`.
 
 Service state: the gate still resolves but no longer answers on its root path (connection
 fails). DNS alive, service gone — consistent with the operator moving on rather than with
