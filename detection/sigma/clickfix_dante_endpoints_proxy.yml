@@ -1,0 +1,31 @@
+title: ClickFix campaign DANTE - stage-3 and telemetry endpoints
+id: b7a2f461-38dc-4e05-8c19-6d3e0f7a5b82
+status: experimental
+description: >
+  Requests to the stage-3 delivery path and to the campaign's conversion-tracking
+  beacon. The beacon fires when the victim pastes the command, before any payload
+  runs - so a hit here can precede the infection rather than confirm it.
+author: Novum Analytica GmbH
+date: 2026-08-06
+logsource:
+    category: proxy
+detection:
+    selection_stage3:
+        c-uri|contains:
+            - '/DANTE/update'
+            - 'ferncurrent14.com/'
+    selection_beacon:
+        c-uri|contains:
+            - 'grove-89.com'
+            - '/api/metrics/run?event=pasted'
+    condition: 1 of selection_*
+fields:
+    - c-uri
+    - cs-user-agent
+    - src_ip
+falsepositives:
+    - None known
+level: critical
+tags:
+    - attack.command_and_control
+    - attack.t1105

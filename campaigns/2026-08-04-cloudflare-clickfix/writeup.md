@@ -4,9 +4,17 @@
 **Delivery:** German primary-school website (compromised or abused as a lure; kept anonymous — the operator has been notified and the site is not attacker-owned)  
 **Reported by:** Novum Analytica GmbH, Berlin · TLP:CLEAR  
 **Analysis:** static only. Nothing was executed, no attacker host was contacted.
-**Scope note:** that statement covers this write-up's 14:42 UTC analysis. Later
-infrastructure mapping the same day *did* contact attacker hosts (download-only) —
-see [`cluster_expansion.md`](cluster_expansion.md).
+**Scope note:** that statement covers this write-up's 14:42 UTC analysis only. Two later
+passes went further and are documented separately:
+
+- 2026-08-04, ~18:10 UTC — infrastructure mapping, download-only GETs against candidate
+  lures. See [`cluster_expansion.md`](cluster_expansion.md).
+- 2026-08-06 — a fresh token was drawn from a still-serving lure and the chain was
+  retrieved end to end, including the stage-3 Mach-O. Static analysis only; the binary
+  was never executed. See [`payload_analysis.md`](payload_analysis.md).
+
+The "nothing was contacted" claim belongs to the first analysis and must not be carried
+over to either of the later ones.
 
 > All hosts below are defanged for reading. Use the live forms when submitting to
 > automated platforms — defanged values will not parse.

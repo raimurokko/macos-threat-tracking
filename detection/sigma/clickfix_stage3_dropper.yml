@@ -1,0 +1,62 @@
+title: macOS ClickFix Stage-3 - Mach-O dropped to /tmp, dequarantined and executed
+id: 4c1e8b90-2d57-4a13-9e6b-51f0a3c8d724
+status: experimental
+description: >
+  Detects the terminal stage of the macOS ClickFix chain: a Mach-O binary is fetched
+  with curl into a world-writable directory, its quarantine and other extended
+  attributes are stripped with xattr -c (or -d com.apple.quarantine), it is made
+  executable, and then run. The xattr step is the load-bearing one - without it
+  Gatekeeper would evaluate the binary on first launch.
+  Observed filenames include helper and update; treat the sequence, not the name,
+  as the indicator.
+author: Novum Analytica GmbH
+date: 2026-08-06
+references:
+    - https://github.com/raimurokko/macos-threat-tracking
+    - https://attack.mitre.org/techniques/T1553/001/
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_xattr:
+        Image|endswith: '/xattr'
+        CommandLine|contains:
+            - ' -c '
+            - '-d com.apple.quarantine'
+            - '-cr '
+    selection_chmod_tmp:
+        Image|endswith: '/chmod'
+        CommandLine|contains: '+x'
+        CommandLine|contains:
+            - '/tmp/'
+            - '/var/folders/'
+            - '/private/tmp/'
+    selection_curl_tmp:
+        Image|endswith: '/curl'
+        CommandLine|contains: '-o '
+        CommandLine|contains:
+            - '/tmp/'
+            - '/private/tmp/'
+    parent_shell:
+        ParentImage|endswith:
+            - '/zsh'
+            - '/bash'
+            - '/sh'
+            - '/Terminal'
+    condition: parent_shell and 1 of selection_*
+fields:
+    - CommandLine
+    - ParentImage
+    - ParentCommandLine
+    - User
+falsepositives:
+    - Build systems and installers that stage binaries in /tmp
+    - Developers clearing extended attributes on their own artefacts
+level: high
+tags:
+    - attack.defense_evasion
+    - attack.t1553.001
+    - attack.execution
+    - attack.t1204.004
+    - attack.command_and_control
+    - attack.t1105

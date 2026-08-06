@@ -13,3 +13,15 @@ behaviour,"curl -s <url> | zsh",execution,high,2026-08-04,CLEAR,"Fileless Stage-
 ip-dst,178.16.52.101,c2-gating-origin,high,2026-08-06,CLEAR,"Origin-IP von enter-pverif-code.info. Cloudflare nur als DNS, A-Record ungeproxied. AS202412 OMEGATECH-AS."
 ip-dst,158.94.208.87,c2-gating-origin,medium,2026-08-06,CLEAR,"Origin-IP von makeverizyjar.info. Gleiches AS202412 wie das bestaetigte Gate."
 asn,AS202412,hosting,medium,2026-08-06,CLEAR,"OMEGATECH-AS - Omegatech LTD. AS registriert 2026-01-12. Beherbergt beide Gate-Origins. Registrierungsland ist weder Serverstandort noch Taeterherkunft."
+domain,grove-89.com,telemetry,high,2026-08-06,CLEAR,"Conversion beacon; POST fires when victim pastes, before payload runs"
+url,https://grove-89.com/api/metrics/run?event=pasted,telemetry,high,2026-08-06,CLEAR,Paste-through counter per build
+url,https://ferncurrent14.com/2kqYRM0DCrnyJgoS4gVLl_FHJRRdTUhGCbjyuYwpZ6c/DANTE/update,payload-host,high,2026-08-06,CLEAR,Stage-3 Mach-O; <path>/<campaign>/update shape
+sha256,29be0f56275f051181ea3ec37ddc3d3807cde34cb65de855709fae0e13786a40,payload,high,2026-08-06,CLEAR,Stage-3 universal Mach-O loader stub
+sha256,3873844f319ebbab08db2f27b6d7336a1d7d91ca65862d9470cd7300e4a3f207,payload,high,2026-08-06,CLEAR,arm64 slice
+sha256,3710bb59c25a1c7eaba2ab471876f223ed5d358fc08e979a2ff1ebeedf03e431,payload,high,2026-08-06,CLEAR,x86_64 slice
+md5,ab477021780e553be4271cb34bb8394b,payload,high,2026-08-06,CLEAR,"Stage-3 universal Mach-O, MD5 for MalwareBazaar/YARAhub reference"
+http-header,user (header name),header-name,medium,2026-08-06,CLEAR,"Non-standard request header emitted by stage 2. Detect on the NAME. The observed VALUE is recorded in payload_analysis.md but deliberately not listed as an indicator: it was seen exactly once, and one sample cannot establish that a value is stable across builds."
+http-header,BuildID (header name),header-name,medium,2026-08-06,CLEAR,"Non-standard request header emitted by stage 2. Detect on the NAME. The observed VALUE is recorded in payload_analysis.md but deliberately not listed as an indicator: it was seen exactly once, and one sample cannot establish that a value is stable across builds."
+string,DANTE,campaign-marker,medium,2026-08-06,CLEAR,Campaign token in stage-3 URL path
+pattern,setup-[0-9a-f]{40},signing-identifier,medium,2026-08-06,CLEAR,"Ad-hoc code signature identifier, no Apple team ID"
+path,/tmp/helper,staging,medium,2026-08-06,CLEAR,Stage-3 drop location; 'update' also observed in this family

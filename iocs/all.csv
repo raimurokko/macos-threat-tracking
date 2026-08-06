@@ -9,3 +9,15 @@ campaign,type,value,role,status,confidence,first_seen,last_checked,notes
 2026-08-04-cloudflare-clickfix,ip-dst,178.16.52.101,c2-gating-origin,active,high,2026-08-06,2026-08-06,"Origin IP of enter-pverif-code.info; Cloudflare DNS only, A record unproxied; AS202412"
 2026-08-04-cloudflare-clickfix,ip-dst,158.94.208.87,c2-gating-origin,active,medium,2026-08-06,2026-08-06,"Origin IP of makeverizyjar.info; same AS202412 as the confirmed gate"
 2026-08-04-cloudflare-clickfix,asn,AS202412,hosting,active,medium,2026-08-06,2026-08-06,"OMEGATECH-AS, Omegatech LTD; AS registered 2026-01-12; hosts both gate origins"
+2026-08-04-cloudflare-clickfix,domain,grove-89.com,telemetry,active,high,2026-08-06,2026-08-06,"Conversion beacon; POST fires when victim pastes, before payload runs"
+2026-08-04-cloudflare-clickfix,url,https://grove-89.com/api/metrics/run?event=pasted,telemetry,active,high,2026-08-06,2026-08-06,Paste-through counter per build
+2026-08-04-cloudflare-clickfix,url,https://ferncurrent14.com/2kqYRM0DCrnyJgoS4gVLl_FHJRRdTUhGCbjyuYwpZ6c/DANTE/update,payload-host,active,high,2026-08-06,2026-08-06,Stage-3 Mach-O; <path>/<campaign>/update shape
+2026-08-04-cloudflare-clickfix,sha256,29be0f56275f051181ea3ec37ddc3d3807cde34cb65de855709fae0e13786a40,payload,active,high,2026-08-06,2026-08-06,Stage-3 universal Mach-O loader stub
+2026-08-04-cloudflare-clickfix,sha256,3873844f319ebbab08db2f27b6d7336a1d7d91ca65862d9470cd7300e4a3f207,payload,active,high,2026-08-06,2026-08-06,arm64 slice
+2026-08-04-cloudflare-clickfix,sha256,3710bb59c25a1c7eaba2ab471876f223ed5d358fc08e979a2ff1ebeedf03e431,payload,active,high,2026-08-06,2026-08-06,x86_64 slice
+2026-08-04-cloudflare-clickfix,md5,ab477021780e553be4271cb34bb8394b,payload,active,high,2026-08-06,2026-08-06,"Stage-3 universal Mach-O, MD5 for MalwareBazaar/YARAhub reference"
+2026-08-04-cloudflare-clickfix,http-header,user (header name),header-name,active,medium,2026-08-06,2026-08-06,"Non-standard request header emitted by stage 2. Detect on the NAME. The observed VALUE is recorded in payload_analysis.md but deliberately not listed as an indicator: it was seen exactly once, and one sample cannot establish that a value is stable across builds."
+2026-08-04-cloudflare-clickfix,http-header,BuildID (header name),header-name,active,medium,2026-08-06,2026-08-06,"Non-standard request header emitted by stage 2. Detect on the NAME. The observed VALUE is recorded in payload_analysis.md but deliberately not listed as an indicator: it was seen exactly once, and one sample cannot establish that a value is stable across builds."
+2026-08-04-cloudflare-clickfix,string,DANTE,campaign-marker,active,medium,2026-08-06,2026-08-06,Campaign token in stage-3 URL path
+2026-08-04-cloudflare-clickfix,pattern,setup-[0-9a-f]{40},signing-identifier,active,medium,2026-08-06,2026-08-06,"Ad-hoc code signature identifier, no Apple team ID"
+2026-08-04-cloudflare-clickfix,path,/tmp/helper,staging,active,medium,2026-08-06,2026-08-06,Stage-3 drop location; 'update' also observed in this family

@@ -3,9 +3,16 @@
 
         yara index.yar /path/to/scan
 
-    Rules are maintained one per file; this file exists only for convenience.
+    Rules are maintained one per file - YARAhub accepts only one rule per submission.
+    This file exists only for convenience.
+
+    Note the mixed target types: the first three rules are for text artefacts (shell
+    history, clipboard dumps, HTML), the two stage3 rules are for Mach-O. Running the
+    index over a mixed tree is harmless but slower than picking the right rule.
 */
 
 include "clickfix_campaign_2026_08_04.yar"
 include "clickfix_macos_generic_exec.yar"
 include "clickfix_fake_captcha_page.yar"
+include "clickfix_macos_stage3_loader.yar"
+include "clickfix_macos_stage3_known_samples.yar"

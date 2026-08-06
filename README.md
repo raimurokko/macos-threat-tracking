@@ -26,9 +26,13 @@ campaigns/<date>-<short-name>/   one directory per campaign
     writeup.md                   chain, analysis, caveats
     iocs.csv                     campaign indicators
     iocs.stix.json               STIX 2.1 bundle (MISP / OpenCTI import)
+    payload_analysis.md          stage-2 and stage-3 analysis, where recovered
+    REFERENCES.md                sources, with what each supports and constrains
+    samples/                     text artefacts only, never binaries
 detection/
-    yara/                        file, clipboard-dump and shell-history rules
+    yara/                        file, clipboard-dump, shell-history and Mach-O rules
     sigma/                       process_creation (macOS), dns_query, proxy
+    suricata/                    network rules for the stage-2 telemetry beacon
 tools/                           safe capture and static triage toolkit
 iocs/all.csv                     aggregated feed across campaigns, with status column
 ```
@@ -37,7 +41,13 @@ iocs/all.csv                     aggregated feed across campaigns, with status c
 
 | Date | Name | Delivery | Family | Status |
 |---|---|---|---|---|
-| 2026-08-04 | [Fake Cloudflare Turnstile](campaigns/2026-08-04-cloudflare-clickfix/writeup.md) | compromised DE school site | unknown | active |
+| 2026-08-04 | [Fake Cloudflare Turnstile](campaigns/2026-08-04-cloudflare-clickfix/writeup.md) | compromised DE school site | AMOS lineage, *assessed* | active |
+
+The family field says *assessed*, not confirmed, and the machine-readable feeds keep it at
+`unknown`. Four vendors describe the same terminal sequence resolving to AMOS, but one of
+them reports the same infrastructure also delivering MacSync, and the payload itself is
+still encrypted. See [REFERENCES.md](campaigns/2026-08-04-cloudflare-clickfix/REFERENCES.md)
+for how each claim maps to a source, including the ones that constrain it.
 
 ## Detection
 
@@ -48,15 +58,28 @@ iocs/all.csv                     aggregated feed across campaigns, with status c
 | `clickfix_campaign_2026_08_04.yar` | campaign infrastructure and clipboard markers | alert directly |
 | `clickfix_macos_generic_exec.yar` | ClickFix execution shape (decode + pipe to shell) | hunting and triage |
 | `clickfix_fake_captcha_page.yar` | the lure page itself (clipboard write + Terminal instructions) | scan web root, CMS templates, DB dumps |
+| `clickfix_macos_stage3_loader.yar` | the stage-3 loader stub, by import combination and ad-hoc signature | **Mach-O scanning** |
+| `clickfix_macos_stage3_known_samples.yar` | known stage-3 hashes | **Mach-O scanning** |
 
 ```sh
 yara detection/yara/index.yar /path/to/scan
 ```
 
-Intended for shell history, clipboard dumps, browser cache, HTML artefacts and memory —
-**not** for Mach-O scanning. The generic rule requires a decode step *and* a pipe, which
-keeps common developer one-liners out: `curl … | sh` from a rustup-style installer does
-not fire it. Still worth tuning against your own estate before you page anyone.
+The first three are intended for shell history, clipboard dumps, browser cache, HTML
+artefacts and memory — **not** for Mach-O scanning. The two `stage3` rules are the
+exception: they **are** for Mach-O, and running them over text only wastes cycles.
+
+The generic rule requires a decode step *and* a pipe, which keeps common developer
+one-liners out: `curl … | sh` from a rustup-style installer does not fire it. The loader
+rule is the one to watch when tuning — it is defined partly by imports the binary
+*lacks*, so a variant that links `CFNetwork` or Security.framework will slip past it
+without a sound. Still worth tuning all of them against your own estate before you page
+anyone.
+
+`detection/suricata/` — network rules keyed on the two non-standard request headers the
+stage-2 script sends before anything is downloaded. The rules match on the header *names*,
+not the observed values: the values were seen once, and one observation does not establish
+that a value survives a rebuild.
 
 `detection/sigma/` — process creation on macOS, plus DNS and proxy rules for the known
 infrastructure. The behavioural rule needs tuning before you alert on it: `curl | sh` is

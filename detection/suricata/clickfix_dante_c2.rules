@@ -1,0 +1,44 @@
+# ClickFix macOS - campaign DANTE, 2026-08
+# Novum Analytica GmbH - TLP:CLEAR - https://github.com/raimurokko/macos-threat-tracking
+#
+# The two custom headers below are the most durable indicators in this campaign.
+# "user" and "BuildID" are non-standard header names carrying campaign and build
+# identifiers, sent by the stage-2 script before any payload ran. Unlike the domains,
+# which rotate, these are emitted by the builder rather than by the hosting, and should
+# survive infrastructure changes.
+#
+# SIDs in the local range 9000000-9000999.
+
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-2 telemetry beacon (custom user/BuildID headers)"; \
+    flow:established,to_server; \
+    http.method; content:"POST"; \
+    http.header_names; content:"|0d 0a|BuildID|0d 0a|"; nocase; \
+    http.header_names; content:"|0d 0a|user|0d 0a|"; nocase; \
+    classtype:trojan-activity; \
+    reference:url,github.com/raimurokko/macos-threat-tracking; \
+    sid:9000101; rev:1; )
+
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - paste-conversion beacon (event=pasted)"; \
+    flow:established,to_server; \
+    http.uri; content:"/api/metrics/run"; \
+    http.uri; content:"event=pasted"; distance:0; \
+    classtype:trojan-activity; \
+    sid:9000102; rev:1; )
+
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-2 loader fetch (/curl/<hex> by curl UA)"; \
+    flow:established,to_server; \
+    http.user_agent; content:"curl/"; startswith; \
+    http.uri; content:"/curl/"; startswith; \
+    pcre:"/^\/curl\/[0-9a-f]{60,70}$/U"; \
+    classtype:trojan-activity; \
+    sid:9000103; rev:1; )
+
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-3 Mach-O fetch (campaign DANTE)"; \
+    flow:established,to_server; \
+    http.uri; content:"/DANTE/update"; endswith; \
+    classtype:trojan-activity; \
+    sid:9000104; rev:1; )
