@@ -26,10 +26,16 @@ import uuid
 
 NAMESPACE = uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")  # RFC 4122 DNS namespace
 
+# Bewusste Abweichung: YARAhub nennt "UUID 4 format", wir erzeugen UUIDv5. Ein echtes v4
+# waere zufaellig - jeder erneute Lauf erzeugte eine neue UUID und damit bei YARAhub eine
+# Dublette statt eines Updates. Die Ableitung aus dem Regelnamen macht Wiederholungen
+# idempotent. Bisher wurde das akzeptiert; falls YARAhub die Version je streng prueft,
+# ist das hier die Stelle, an der es bricht.
+
 DEFAULTS = {
     "yarahub_license": "CC0 1.0",
     "yarahub_rule_matching_tlp": "TLP:WHITE",
-    "yarahub_rule_sharing_tlp": "TLP:GREEN",
+    "yarahub_rule_sharing_tlp": "TLP:WHITE",
     "yarahub_author_email": "",
     "yarahub_reference_link": "https://github.com/raimurokko/macos-threat-tracking",
 }

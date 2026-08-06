@@ -19,7 +19,7 @@ rule ClickFix_Campaign_Cloudflare_2026_08 : clickfix macos campaign
         yarahub_reference_link      = "https://github.com/raimurokko/macos-threat-tracking"
         yarahub_license             = "CC0 1.0"
         yarahub_rule_matching_tlp   = "TLP:WHITE"
-        yarahub_rule_sharing_tlp    = "TLP:GREEN"
+        yarahub_rule_sharing_tlp    = "TLP:WHITE"
         description  = "ClickFix campaign infrastructure and clipboard markers, Aug 2026"
         reference    = "https://github.com/raimurokko/macos-threat-tracking"
         severity     = "critical"

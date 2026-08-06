@@ -20,7 +20,7 @@ rule ClickFix_macOS_Generic_ClipboardExec : clickfix macos behaviour
         yarahub_reference_link      = "https://github.com/raimurokko/macos-threat-tracking"
         yarahub_license             = "CC0 1.0"
         yarahub_rule_matching_tlp   = "TLP:WHITE"
-        yarahub_rule_sharing_tlp    = "TLP:GREEN"
+        yarahub_rule_sharing_tlp    = "TLP:WHITE"
         description  = "Generic ClickFix execution pattern on macOS: eval of decoded blob, or curl piped to a shell"
         reference    = "https://github.com/raimurokko/macos-threat-tracking"
         severity     = "high"
