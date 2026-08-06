@@ -58,10 +58,20 @@ BuildID:  Ag...
 This is affiliate telemetry — the operator is counting paste-through rate per build.
 
 Two consequences for defenders. First, a hit on this beacon **precedes** the compromise:
-between the beacon and the stage-3 fetch there is a window, small but real. Second, these
-header names and values come from the builder rather than the hosting, so they should
-outlive domain rotation. They are the most durable indicators in the whole chain and are
-worth a network rule of their own — see `detection/suricata/clickfix_dante_c2.rules`.
+between the beacon and the stage-3 fetch there is a window, small but real. Second, the
+header *names* look more durable than the hosting, and are worth a network rule of their
+own — see `detection/suricata/clickfix_dante_c2.rules`.
+
+**Prior art, found late and worth stating plainly.** This pair is not our discovery. A
+SigmaHQ emerging-threats rule published 2025-11-22 already matches on `user:` together
+with `BuildID` in AMOS `curl` POSTs [12], built on a Trend Micro MDR analysis of an AMOS
+campaign [13]. We found the headers independently and initially recorded them as the most
+durable indicators in the chain; the first half of that is right, the novelty was not.
+
+The upside outweighs the correction: an independent team observed the same two headers in
+delivery they attribute to AMOS. That is the strongest single piece of corroboration for
+the family assessment below, and it arrived from a direction we were not looking in — a
+detection rule, not a threat report.
 
 The second request retrieves the Mach-O to `/tmp/helper`, strips extended attributes with
 `xattr -c`, sets the executable bit and runs it. The `xattr` step is load-bearing: without
@@ -148,6 +158,17 @@ Against that, three constraints:
 
 The binary-level indicators — universal, C++, ad-hoc signed — are consistent with AMOS
 but not exclusive to it.
+
+**A fourth supporting point, added 2026-08-06:** the `user:` / `BuildID` header pair we
+observed in stage 2 also appears in a SigmaHQ rule for Atomic macOS Stealer [12], derived
+from a Trend Micro MDR investigation [13]. Two independent observations of the same
+builder-emitted headers in AMOS-attributed delivery is a stronger link than anything the
+chain shape alone provides.
+
+It does not resolve the question. The constraint from [1] stands unchanged — the same
+infrastructure delivers MacSync too — and header names emitted by a builder tell you which
+*builder*, not which family the builder was sold to. Confidence moves up within the band,
+not out of it.
 
 **Recorded as: AMOS lineage, assessed, medium-high confidence.** The sample has been
 submitted to MalwareBazaar; the family field in ThreatFox stays `unknown` until an

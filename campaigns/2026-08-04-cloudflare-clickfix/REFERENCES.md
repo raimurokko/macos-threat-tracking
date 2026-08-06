@@ -99,16 +99,40 @@ they remain ambivalent about assigning a given sample to one family or another. 
 ambivalence, from researchers with far more samples than we have, is the strongest
 argument for leaving our family field open.
 
+### Corroboration found after the fact
+
+**[12] SigmaHQ — `proc_creation_macos_malware_amos_curl_post.yml`** · 2025-11-22
+https://github.com/SigmaHQ/sigma/blob/master/rules-emerging-threats/2025/Malware/Atomic-MacOS-Stealer/proc_creation_macos_malware_amos_curl_post.yml
+Jason Phang Vern - Onn, Robbin Ooi Zhen Heng (Gen Digital).
+
+Supports: the strongest link we have. The rule matches `curl` POSTs carrying `user:`
+together with `BuildID` — the same two non-standard headers our stage 2 sends — and is
+filed under Atomic macOS Stealer. Found while checking for duplicates before contributing
+our own rules upstream, nine months after the rule was published.
+
+Constrains: builder-emitted headers identify a *builder*, not a family. Stealers are sold
+and rebranded; a shared builder is compatible with more than one downstream product.
+
+**[13] Trend Micro — "An MDR Analysis of the AMOS Stealer Campaign"** · 2025-09
+https://www.trendmicro.com/en_us/research/25/i/an-mdr-analysis-of-the-amos-stealer-campaign.html
+The investigation [12] is built on. Cited here because the Sigma rule is the artefact we
+found, but the research behind it is the actual source.
+
+Further reading referenced by [12], not independently assessed here:
+- Hunt.io — macOS ClickFix AppleScript/Terminal phishing:
+  https://hunt.io/blog/macos-clickfix-applescript-terminal-phishing
+- Jamf — infostealers on macOS: https://www.jamf.com/blog/infostealers-pose-threat-to-macos/
+
 ### Taxonomy and submission targets
 
-**[9] Malpedia — `osx.amos` (AMOS, aka Atomic macOS Stealer)**
+**[14] Malpedia — `osx.amos` (AMOS, aka Atomic macOS Stealer)**
 https://malpedia.caad.fkie.fraunhofer.de/details/osx.amos
 The canonical family label, required by ThreatFox submissions.
 
-**[10] ThreatFox — IOCs associated with `osx.amos`**
+**[15] ThreatFox — IOCs associated with `osx.amos`**
 https://threatfox.abuse.ch/browse/malware/osx.amos/
 
-**[11] Apple — Terminal paste protection, macOS 26.4**
+**[16] Apple — Terminal paste protection, macOS 26.4**
 https://support.apple.com/en-us/127377
 Platform mitigation directly targeting the ClickFix delivery mechanism, referenced by [1].
 
@@ -116,7 +140,9 @@ Platform mitigation directly targeting the ClickFix delivery mechanism, referenc
 
 ### Summary of the evidential position
 
-Four independent vendors describe the same terminal sequence resolving to AMOS. One of
+Four independent vendors describe the same terminal sequence resolving to AMOS, and a
+fifth party independently observed our two stage-2 headers in AMOS-attributed delivery
+[12][13]. One of
 them ([1]) states plainly that the same infrastructure also delivers MacSync, and a
 second ([5]) independently reports MacSync using the identical social-engineering
 approach. A third ([8]) reports that even well-resourced researchers do not reliably
