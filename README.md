@@ -79,7 +79,7 @@ shell see it**. The rule the whole thing rests on: there is no pipe into `sh`, `
 - `watch_clickfix.sh` — polls urlscan for new ClickFix submissions; capture is opt-in
 
 On timing: ClickFix lures are gated and short-lived. On 2026-08-04 a batch was already
-dead 78 minutes after submission, and urlscan's own scanner had been gated out too — so
+dead roughly 70 minutes after submission, and urlscan's own scanner had been gated out too — so
 the archived DOM was no help either. `watch_clickfix.sh` exists to shorten that gap, but
 the reliable reference sample is the injected block recovered from a site you already
 have an incident relationship with. See

@@ -77,7 +77,10 @@ the obvious follow-up.
 
 ## Live capture: negative result
 
-Eight targets retrieved at ~18:05 UTC, 78 minutes after the ThreatFox submission:
+Eight targets retrieved shortly after 18:08 UTC — roughly 70 minutes after the
+16:56:50 UTC ThreatFox submission. (The exact retrieval timestamps were not
+preserved; the working copy was created at 18:08 UTC and the fetches followed
+immediately, so treat the gap as ~70 minutes, not a precise figure.)
 
 | Target | Result |
 |---|---|
@@ -97,7 +100,7 @@ either. The gating is stronger than user-agent or referer; one-shot-per-IP, geo
 filtering, or a required redirect chain from malvertising all fit the evidence.
 
 **Operational takeaway:** for this campaign the lure is retrievable only inside a window
-well under 78 minutes, if at all from a research address. Chasing third-party lures is
+well under an hour, if at all from a research address. Chasing third-party lures is
 the weaker path to a reference sample. The injected block from a site we already have
 an incident relationship with is authentic, attacker-controlled, and excisable from its
 page context — that is where `clickfix_fake_captcha_page.yar` should get its
