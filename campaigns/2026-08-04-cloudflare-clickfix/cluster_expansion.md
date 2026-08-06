@@ -106,6 +106,42 @@ an incident relationship with is authentic, attacker-controlled, and excisable f
 page context — that is where `clickfix_fake_captcha_page.yar` should get its
 `yarahub_reference_md5`.
 
+## Addendum 2026-08-06: the gates are not behind the proxy
+
+Re-checked two days later. All three attacker domains still resolve, but only one of
+them is actually proxied:
+
+| Domain | A record | AS | Note |
+|---|---|---|---|
+| `enter-pverif-code[.]info` | 178.16.52.101 | **AS202412** | Cloudflare NS, DNS-only record — origin exposed |
+| `makeverizyjar[.]info` | 158.94.208.87 | **AS202412** | same |
+| `ferncurrent14[.]com` | 188.114.96.3 / .97.3 | AS13335 | Cloudflare, proxied |
+
+AS202412 is `OMEGATECH-AS — Omegatech LTD`, an autonomous system registered
+**2026-01-12**. Both answers were confirmed identical against two independent resolvers
+(1.1.1.1 and 8.8.8.8).
+
+Two consequences:
+
+1. **`makeverizyjar[.]info` is no longer just a structural guess.** The earlier
+   assessment rested on matching age and an identical response length. It now shares an
+   autonomous system with the confirmed stage-1 gate, which is a materially stronger
+   link. Still short of proof — an AS can host unrelated customers — but it moves the
+   confidence from "suspected sibling" to "same hosting infrastructure".
+2. **There is something for legal process to act on.** A Cloudflare-fronted domain gives
+   an investigator nothing; an unproxied origin IP identifies a hosting provider that can
+   be served a subscriber-data request. For the two gates, that door is open.
+
+**What this does *not* say.** The AS is registered in the Seychelles and its netblocks
+are allocated under a Turkish registration. Both are registry facts. Neither is a server
+location, and neither says anything whatsoever about who operates the campaign.
+Infrastructure is rented. The useful part is the *provider*, not the flag — see also the
+scope note in `writeup.md`.
+
+Service state: the gate still resolves but no longer answers on its root path (connection
+fails). DNS alive, service gone — consistent with the operator moving on rather than with
+a takedown.
+
 ## Caveats
 
 - Inclusion in a ThreatFox batch means *submitted as suspected*, not *confirmed lure*.

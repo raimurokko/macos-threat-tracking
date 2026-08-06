@@ -277,6 +277,72 @@
       "relationship_type": "indicates",
       "source_ref": "indicator--8c56fd1a-eb6e-4e32-9d3c-f2e8c3f77118",
       "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--0d68d3c3-6a2f-52bc-bb09-9ecb5ab9223b",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "ClickFix gate origin IP (178.16.52.101, enter-pverif-code.info)",
+      "description": "Origin IP of the stage-1 gate. The domain uses Cloudflare nameservers but the A record is DNS-only, so the origin is exposed. AS202412 (OMEGATECH-AS, Omegatech LTD), AS registered 2026-01-12.",
+      "indicator_types": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[ipv4-addr:value = '178.16.52.101']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--eaadb8f5-41d4-57fa-9c63-50aab609a7da",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--0d68d3c3-6a2f-52bc-bb09-9ecb5ab9223b",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--297c8e98-202c-5243-ad86-f8f3fa4c0331",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "ClickFix gate origin IP (158.94.208.87, makeverizyjar.info)",
+      "description": "Origin IP of the suspected sibling gate. Same AS202412 as the confirmed stage-1 gate - this raises the sibling assessment from a response-length match to shared hosting infrastructure.",
+      "indicator_types": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[ipv4-addr:value = '158.94.208.87']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--e1fc7450-5f3f-532e-a5ee-59f9ac200cfe",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--297c8e98-202c-5243-ad86-f8f3fa4c0331",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
     }
   ]
 }

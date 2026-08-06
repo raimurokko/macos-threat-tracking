@@ -6,3 +6,6 @@ campaign,type,value,role,status,confidence,first_seen,last_checked,notes
 2026-08-04-cloudflare-clickfix,string,_7dcf=af7d6e2e6aa1,clipboard-marker,active,medium,2026-08-04,2026-08-04,"Session marker prepended to clipboard command"
 2026-08-04-cloudflare-clickfix,behaviour,openssl base64 -d -A,obfuscation,active,medium,2026-08-04,2026-08-04,"Second decode layer; avoids the obvious 'base64 -d' string"
 2026-08-04-cloudflare-clickfix,behaviour,curl -s <url> | zsh,execution,active,high,2026-08-04,2026-08-04,"Fileless stage-2 execution"
+2026-08-04-cloudflare-clickfix,ip-dst,178.16.52.101,c2-gating-origin,active,high,2026-08-06,2026-08-06,"Origin IP of enter-pverif-code.info; Cloudflare DNS only, A record unproxied; AS202412"
+2026-08-04-cloudflare-clickfix,ip-dst,158.94.208.87,c2-gating-origin,active,medium,2026-08-06,2026-08-06,"Origin IP of makeverizyjar.info; same AS202412 as the confirmed gate"
+2026-08-04-cloudflare-clickfix,asn,AS202412,hosting,active,medium,2026-08-06,2026-08-06,"OMEGATECH-AS, Omegatech LTD; AS registered 2026-01-12; hosts both gate origins"

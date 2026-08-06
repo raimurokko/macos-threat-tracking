@@ -10,3 +10,6 @@ string,_xr=$(curl -s,clipboard-marker,medium,2026-08-04,CLEAR,"Wegwerf-Variablen
 behaviour,"eval \"$(printf '%s' '<base64>'|base64 -d)\"",execution,high,2026-08-04,CLEAR,"ClickFix-Ausfuehrungsmuster macOS."
 behaviour,"openssl base64 -d -A",obfuscation,medium,2026-08-04,CLEAR,"Zweite Dekodierschicht; openssl statt base64 zur Signatur-Umgehung."
 behaviour,"curl -s <url> | zsh",execution,high,2026-08-04,CLEAR,"Fileless Stage-2-Ausfuehrung, kein Schreibvorgang auf Platte."
+ip-dst,178.16.52.101,c2-gating-origin,high,2026-08-06,CLEAR,"Origin-IP von enter-pverif-code.info. Cloudflare nur als DNS, A-Record ungeproxied. AS202412 OMEGATECH-AS."
+ip-dst,158.94.208.87,c2-gating-origin,medium,2026-08-06,CLEAR,"Origin-IP von makeverizyjar.info. Gleiches AS202412 wie das bestaetigte Gate."
+asn,AS202412,hosting,medium,2026-08-06,CLEAR,"OMEGATECH-AS - Omegatech LTD. AS registriert 2026-01-12. Beherbergt beide Gate-Origins. Registrierungsland ist weder Serverstandort noch Taeterherkunft."
