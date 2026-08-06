@@ -14,7 +14,7 @@ rule ClickFix_Campaign_Cloudflare_2026_08 : clickfix macos campaign
     meta:
         author       = "Novum Analytica GmbH"
         date         = "2026-08-04"
-        yarahub_uuid                = "a015291f-f8ef-53b2-a3c9-c6a7f54fb760"
+        yarahub_uuid                = "a015291f-f8ef-43b2-a3c9-c6a7f54fb760"
         yarahub_reference_md5       = "2169ff5e7be77fc3ff72758f9fa50658"
         yarahub_reference_link      = "https://github.com/raimurokko/macos-threat-tracking"
         yarahub_license             = "CC0 1.0"

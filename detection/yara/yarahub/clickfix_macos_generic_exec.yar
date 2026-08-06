@@ -15,7 +15,7 @@ rule ClickFix_macOS_Generic_ClipboardExec : clickfix macos behaviour
     meta:
         author       = "Novum Analytica GmbH"
         date         = "2026-08-04"
-        yarahub_uuid                = "952be7c3-4f2f-5fbb-9333-037919f11004"
+        yarahub_uuid                = "952be7c3-4f2f-4fbb-9333-037919f11004"
         yarahub_reference_md5       = "2169ff5e7be77fc3ff72758f9fa50658"
         yarahub_reference_link      = "https://github.com/raimurokko/macos-threat-tracking"
         yarahub_license             = "CC0 1.0"

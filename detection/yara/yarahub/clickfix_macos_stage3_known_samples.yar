@@ -11,7 +11,7 @@ rule ClickFix_macOS_Stage3_KnownSamples : clickfix macos campaign macho
     meta:
         author      = "Novum Analytica GmbH"
         date        = "2026-08-06"
-        yarahub_uuid                = "b020502e-f647-517e-9d88-35e5a4ce2e9d"
+        yarahub_uuid                = "b020502e-f647-417e-9d88-35e5a4ce2e9d"
         yarahub_reference_md5       = "ab477021780e553be4271cb34bb8394b"
         yarahub_reference_link      = "https://github.com/raimurokko/macos-threat-tracking"
         yarahub_license             = "CC0 1.0"

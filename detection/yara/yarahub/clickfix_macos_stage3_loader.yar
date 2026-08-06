@@ -36,7 +36,7 @@ rule ClickFix_macOS_Stage3_LoaderStub : clickfix macos loader macho
     meta:
         author       = "Novum Analytica GmbH"
         date         = "2026-08-06"
-        yarahub_uuid                = "fbc7d408-b105-5708-82d1-d4940c45ce2d"
+        yarahub_uuid                = "fbc7d408-b105-4708-82d1-d4940c45ce2d"
         yarahub_reference_md5       = "ab477021780e553be4271cb34bb8394b"
         yarahub_reference_link      = "https://github.com/raimurokko/macos-threat-tracking"
         yarahub_license             = "CC0 1.0"

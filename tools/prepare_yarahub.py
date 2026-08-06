@@ -26,11 +26,15 @@ import uuid
 
 NAMESPACE = uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")  # RFC 4122 DNS namespace
 
-# Bewusste Abweichung: YARAhub nennt "UUID 4 format", wir erzeugen UUIDv5. Ein echtes v4
-# waere zufaellig - jeder erneute Lauf erzeugte eine neue UUID und damit bei YARAhub eine
-# Dublette statt eines Updates. Die Ableitung aus dem Regelnamen macht Wiederholungen
-# idempotent. Bisher wurde das akzeptiert; falls YARAhub die Version je streng prueft,
-# ist das hier die Stelle, an der es bricht.
+# YARAhub validiert das UUID-Format streng und lehnt alles ab, was nicht Version 4 ist.
+# Ein echtes zufaelliges v4 wuerde bei jedem Lauf neu ausfallen und bei YARAhub eine
+# Dublette statt eines Updates erzeugen. Deshalb: deterministisch aus dem Regelnamen
+# ableiten, dann Versions- und Variantenbits auf v4 setzen. Das Ergebnis ist formal ein
+# v4 und bleibt ueber Laeufe hinweg stabil.
+#
+# Ehrlich benannt: die Zufaelligkeit, die v4 nominell zusichert, ist hier keine. Das ist
+# ohne Belang - die UUID ist ein Bezeichner, keine Sicherheitseigenschaft - aber es steht
+# hier, damit es niemand spaeter fuer echten Zufall haelt.
 
 DEFAULTS = {
     "yarahub_license": "CC0 1.0",
@@ -56,7 +60,8 @@ def enrich(text: str, md5: str, link: str, email: str) -> str:
         print(f"  bereits angereichert, wird uebersprungen: {name}")
         return text
 
-    ruid = str(uuid.uuid5(NAMESPACE, f"novum-analytica/{name}"))
+    digest = uuid.uuid5(NAMESPACE, f"novum-analytica/{name}").bytes
+    ruid = str(uuid.UUID(bytes=digest, version=4))
     fields = [
         ("yarahub_uuid", ruid),
         ("yarahub_reference_md5", md5),
