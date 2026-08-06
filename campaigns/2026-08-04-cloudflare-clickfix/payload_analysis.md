@@ -195,6 +195,25 @@ infrastructure-side monitoring are not substitutes for each other.
 | YARA rules | YARAify / YARAhub, reference MD5 `ab477021780e553be4271cb34bb8394b` |
 | Indicators | <https://otx.alienvault.com/pulse/6a74f0919f32840a8acc6a6f> |
 | Sigma rules | <https://github.com/SigmaHQ/sigma/pull/6205> (proposed upstream) |
+| Stage-2 script | <https://bazaar.abuse.ch/sample/40ecec3216ca8cfadbc82f7bd0262f2daeb39ec2547cef1756606104ad2e0563/> |
+
+### What was already public, and what was not
+
+ThreatFox rejected `enter-pverif-code[.]info` and `ferncurrent14[.]com` as duplicates.
+Correctly: both were part of the 29-domain batch submitted there on 2026-08-04 at
+16:56:50 UTC — the same batch documented in `cluster_expansion.md`, two days before our
+own submission. Finding them independently is not the same as finding them first, and the
+distinction belongs in the record.
+
+What this analysis actually added to the public feeds:
+
+| Indicator | Status |
+|---|---|
+| `grove-89[.]com` | **New.** No public scan history at all when found; the paste beacon was undocumented. |
+| Stage-3 Mach-O and its hashes | **New.** The payload had not been recovered before. |
+| Clipboard payload | **New** as a shared artefact, though its hash was already the reference in two published YARA rules. |
+| `enter-pverif-code[.]info`, `ferncurrent14[.]com` | Already public since 2026-08-04. |
+| `user` / `BuildID` header pair | Already documented, see [12]. |
 
 ## Detection added from this analysis
 
