@@ -138,11 +138,13 @@ def main() -> int:
 
         if any(ord(c) > 127 for c in enriched):
             print(f"  WARNUNG        {dst} enthaelt Non-ASCII. YARAhub lehnt das ab.")
-        print(f"  geschrieben    {dst}  ({name})")
+        print(f"  geschrieben    {dst.resolve()}  ({name})")
         written += 1
 
     print(f"\n{written} Regel(n) bereit, {skipped} uebersprungen.")
     if written:
+        print(f"\nHochzuladen sind die Dateien in {out.resolve()} -")
+        print("die gleichnamigen unter detection/yara/ haben die Pflichtfelder NICHT.")
         print(f"\nNaechster Schritt: '{sample.name}' bei YARAify hochladen,")
         print(f"dann die Datei(en) aus {out}/ bei YARAhub einreichen.")
         print("Die MD5 im meta-Feld muss zu der hochgeladenen Datei passen.")
