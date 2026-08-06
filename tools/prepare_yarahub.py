@@ -60,6 +60,9 @@ def enrich(text: str, md5: str, link: str, email: str) -> str:
         print(f"  bereits angereichert, wird uebersprungen: {name}")
         return text
 
+    # "novum-analytica" ist hier KEIN Domainname, sondern der Namensraum-String, aus dem
+    # die UUID abgeleitet wird. Nicht auf novumanalytica.com "korrigieren" - das aendert
+    # jede UUID und laesst die bereits bei YARAhub eingestellten Regeln verwaisen.
     digest = uuid.uuid5(NAMESPACE, f"novum-analytica/{name}").bytes
     ruid = str(uuid.UUID(bytes=digest, version=4))
     fields = [

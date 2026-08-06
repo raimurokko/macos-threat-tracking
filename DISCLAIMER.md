@@ -59,4 +59,4 @@ run and where you run it.
 ## Contact
 
 Security and coordination matters: see the contact details on
-[novum-analytica.de](https://novum-analytica.de). For everything else, open an issue.
+[novumanalytica.com](https://novumanalytica.com). For everything else, open an issue.

@@ -3,7 +3,7 @@
 Tracking of macOS ClickFix campaigns: vetted IOCs, decoded delivery chains, YARA and
 Sigma detections, and tooling for capturing payloads without executing them.
 
-Maintained by **[Novum Analytica GmbH](https://novum-analytica.de)**, Berlin.
+Maintained by **[Novum Analytica GmbH](https://novumanalytica.com)**, Berlin.
 Everything here is published **TLP:CLEAR** — use it, fork it, feed it into your stack.
 
 ---
