@@ -29,7 +29,8 @@ overlaps this operator's infrastructure directly.
 A second, structural link: `enter-pverif-code[.]info` (our gating host, registered
 0 days ago) appears alongside `makeverizyjar[.]info` — also 0 days old, and answering
 with a response of **identical length (294 B)**. Same role, same age, same response
-size. Treat it as a sibling gating host pending confirmation.
+size. Treat it as a sibling gating host — since corroborated by shared hosting
+infrastructure, see the 2026-08-06 addendum below.
 
 ## Infrastructure split
 
