@@ -44,6 +44,9 @@ The YARA rules written from these artefacts are deployed on
 | `ClickFix_macOS_Stage3_LoaderStub` | stage-3 Mach-O, MD5 `ab477021780e553be4271cb34bb8394b` |
 | `ClickFix_macOS_Stage3_KnownSamples` | stage-3 Mach-O, same |
 
+Indicators are also published as an OTX pulse:
+<https://otx.alienvault.com/pulse/6a74f0919f32840a8acc6a6f>
+
 Each rule carries its reference MD5 in `yarahub_reference_md5`, so a third party can pull
 the sample from MalwareBazaar, run the rule from `../../../detection/yara/yarahub/`, and
 confirm the match without taking our word for it. That is the point of publishing both.

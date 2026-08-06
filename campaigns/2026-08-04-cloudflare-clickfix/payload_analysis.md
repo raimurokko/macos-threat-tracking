@@ -187,6 +187,15 @@ registered ones — which matters for hunting, because a domain-generation patte
 never surface the compromised half. It also means victim-side monitoring and
 infrastructure-side monitoring are not substitutes for each other.
 
+## Where this is published
+
+| Artefact | Location |
+|---|---|
+| Stage-3 Mach-O | <https://bazaar.abuse.ch/sample/29be0f56275f051181ea3ec37ddc3d3807cde34cb65de855709fae0e13786a40/> |
+| YARA rules | YARAify / YARAhub, reference MD5 `ab477021780e553be4271cb34bb8394b` |
+| Indicators | <https://otx.alienvault.com/pulse/6a74f0919f32840a8acc6a6f> |
+| Sigma rules | <https://github.com/SigmaHQ/sigma/pull/6205> (proposed upstream) |
+
 ## Detection added from this analysis
 
 - `detection/yara/clickfix_macos_stage3_loader.yar` — loader family by import
