@@ -86,6 +86,39 @@ tag pointers from `0x100018fe0`; the six lengths sum to `0x10d7c`, exactly the s
 loader passes to `mmap`. All six Poly1305 tags verify — the key is confirmed
 cryptographically, not by inspection.
 
+### The loader states the expected plaintext hash, and it matches
+
+Found on 2026-08-07 while checking why a YARA rule was not deploying. `__DATA_CONST+0xe0`
+in the arm64 slice — `+0xb0` in x86_64 — holds 32 bytes that are exactly
+
+```
+95ab5a61a0970410ada36ba843e55e270f38cb8e2eebf79254434948e11c870f
+```
+
+the SHA-256 of the decrypted payload. It is not decoration: after decryption the loader
+hashes the plaintext and compares it against this constant in constant time before
+executing it.
+
+```
+0x3560  x0 = decrypted buffer, x1 = 0x10d7c
+0x3568  bl 0x100004fe0                    ; SHA-256 over the plaintext
+0x3574  x9 = __DATA_CONST+0xe0            ; stored expected hash
+0x357c  loop: eor computed ^ stored, orr-accumulate, 32 bytes
+0x359c  fold to a single zero test, then branch
+```
+
+Two consequences.
+
+**It is a third, independent confirmation that the decryption is right.** The six Poly1305
+tags prove the ciphertext was decrypted with the correct key. This proves the resulting
+plaintext is the one the malware author intended to run — the loader names the hash, and
+ours is that hash. Nothing about the recovered payload rests on interpretation.
+
+**It is a better detection anchor than a file hash.** The constant identifies the
+*payload*, not the file, so it survives a rebuild of the loader around the same stealer:
+new file hash, new keys, same 32 bytes. `detection/yara/clickfix_macos_stage3_known_samples.yar`
+was rewritten around it and no longer needs the `hash` module.
+
 ### A keyspace note for future samples
 
 Even without the emulation the password is a 32-bit value with a cheap verification

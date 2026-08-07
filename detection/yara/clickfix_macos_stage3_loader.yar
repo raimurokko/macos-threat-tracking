@@ -29,8 +29,6 @@
     Reference sample: SHA256 29be0f56275f051181ea3ec37ddc3d3807cde34cb65de855709fae0e13786a40
 */
 
-import "hash"
-
 rule ClickFix_macOS_Stage3_LoaderStub : clickfix macos loader macho
 {
     meta:
