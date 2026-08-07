@@ -13,11 +13,19 @@ plainly: *"Recovering the payload would require emulating that decryption. Not
 attempted here."* It has now been attempted, and it worked. This file records what came
 out and what it changes.
 
-The short version: **the earlier assessment understated the threat.** The loader's API
-surface pointed to an infostealer preamble, which was correct as far as it went. The
-payload steals data, and then installs two root LaunchDaemons and replaces three wallet
-applications with attacker-supplied builds. For an affected host that is the difference
-between "credentials were taken" and "the machine is not yours any more".
+The short version: **the earlier assessment understated the threat to an affected host,
+and overstated the novelty of what was found.**
+
+The loader's API surface pointed to an infostealer preamble, which was correct as far as
+it went. The payload steals data, and then installs two root LaunchDaemons and replaces
+three wallet applications with attacker-supplied builds. For a host that ran this chain
+that is the difference between "credentials were taken" and "the machine is not yours any
+more", and it is the reason this file exists.
+
+It is not, however, a discovery. Both behaviours are documented AMOS activity, published
+in November 2025 and since. What is new here is how the payload was reached — the packer's
+key schedule — and a handful of variant-level details. §6 sets out which is which, and
+moves the family assessment from *assessed* to **confirmed** as a result.
 
 ## 1. How the payload was recovered
 
@@ -251,6 +259,8 @@ substitution on the victim host**, not credential theft, and it is the single mo
 consequential behaviour in the sample: a user who later opens their wallet is using the
 operator's build.
 
+It is also not new — see §6.
+
 ### Exfiltration
 
 ```
@@ -275,7 +285,7 @@ POST /api/metrics/run?event=<event>&stage=<stage>
 
 **The header pair is a header quartet.** Beyond `user` and `BuildID` the payload emits
 `cl` and `cn`, plus `X-Partial` on chunked uploads. The Suricata rules have been extended
-accordingly.
+accordingly. `cl` and `cn` were already public before we found them — see §6.
 
 ## 4. Indicators
 
@@ -337,24 +347,63 @@ visible at runtime.
 These strings are builder artefacts, not campaign artefacts. See
 `detection/yara/freshfix_payload_internals.yar`.
 
-## 6. What this changes for the assessment
+## 6. Prior art, and the correction it forces
 
-The family judgement stays **AMOS lineage, assessed, medium-high** — but the reasons
-shift, and one of them now cuts the other way.
+The first draft of this file, written the same day, argued that the persistence and the
+wallet replacement were *not* part of published AMOS behaviour, and that this cut against
+an AMOS labelling. **That was wrong in both halves.** Checking SigmaHQ before submitting
+rules — the same check that caught the `user`/`BuildID` claim in `payload_analysis.md` —
+turned up two upstream AMOS rules dated 2025-11-22, and following their references
+settled it.
 
-For AMOS: the `FileGrabber/` staging directory, the extension-ID list, the
-`dscl . authonly` validation trick, the Safe Storage extraction and the dialog wording
-are all AMOS-family hallmarks.
+What we recorded as new, and what was already public:
 
-Against a clean AMOS labelling: published AMOS analyses describe a stealer that
-exfiltrates and exits. Two root LaunchDaemons and on-host replacement of wallet
-applications are not part of that description. Together with the observation in
-`payload_analysis.md` that `freshfix` reads like a separately built and reused packer,
-the most defensible reading is that **loader and payload are separate products** — and
-that the payload is either a later AMOS derivative or a different family using the same
-collection playbook.
+| Observation | Status |
+|---|---|
+| Root LaunchDaemon, `RunAtLoad` + `KeepAlive`, installed with a phished password | **Documented.** Moonlock, `com.finder.helper.plist` with `~/.agent` and `~/.mainhelper` |
+| Ledger / Trezor / Exodus replaced from `app.zip` / `apptwo.zip` / `appex.zip` | **Documented, byte-identical archive names.** Only the host differs — `isnimitz[.]com`, `wusetail[.]com` there, ours here |
+| The `/zxc/` path segment | **Documented** in both of the above |
+| `.logged` marker file | **Documented** |
+| Headers `cl` and `cn` | **Documented.** `cl` is matched literally in the upstream SigmaHQ rule; `cn` is named in the IRU analysis |
+| `FileGrabber/`, `/tmp/out.zip`, `ditto -c -k --sequesterRsrc` | **Documented** |
+| The `freshfix` packer: HKDF labels, PBKDF2 at 98,222 iterations, six ChaCha20-Poly1305 chunks, the obfuscated 32-bit key | **New.** Published AMOS analyses describe a custom hex-plus-base64 routine, not this |
+| The 29-entry analyst-tool blacklist and nine environment variables | **New.** No published AMOS analysis catalogues them |
+| Daemon labels `com.apple.accountsd.helper` and `com.apple.metadata.mds.worker`, staging under `~/Library/Application Support/.com.apple.*` | **New variant.** The documented label is `com.finder.helper` with `~/.agent`; this build imitates Apple service names instead |
+| `X-Partial` on chunked uploads | **New variant.** IRU documents `X-Chunk-ID` / `X-Chunk-Part` / `X-Chunk-Total` |
+| `grove53.com`, `161.35.146.120` | **New.** No public history at time of discovery |
+| macOS ≥ 26.4.1 version gate | **New.** Not in any analysis we found |
 
-Recorded as assessed, not confirmed. The family field in ThreatFox stays `unknown`.
+### The assessment moves up, not sideways
+
+The archive-name triple, the `/zxc/` segment, the four-header set, `FileGrabber/`, the
+`.logged` marker and the wallet trio all match independently published AMOS analyses. Two
+of those are exact string matches that a coincidence does not produce.
+
+**Recorded as: AMOS, confirmed, high confidence.** This supersedes the *assessed,
+medium-high* in `payload_analysis.md`, which was written before the payload was available.
+
+The earlier reasoning that `freshfix` might be a separately sold packer still stands and
+is unaffected: a distinct, named packer wrapping an AMOS payload is exactly what a
+packer-as-a-service arrangement looks like. What no longer stands is the inference from
+*this loader is a distinct product* to *the payload may not be AMOS*.
+
+### On the ThreatFox family field
+
+It can now be set to `osx.amos`. The field was kept at `unknown` because the evidence was
+chain-shape only; it is no longer chain-shape only.
+
+### Why this is in the file rather than quietly fixed
+
+Third time in this case that a stopping point hardened into a claim: the gate was called a
+wall, the encryption was called environmentally keyed, and the behaviour was called
+undocumented. Each was checkable, and the check was cheap in all three. The pattern is
+written up in
+[research/2026-08-clickfix-single-use-gate](https://github.com/raimurokko/research/blob/main/notes/2026-08-clickfix-single-use-gate/README.md).
+
+The rule this repository keeps: an independent finding is worth recording, but recording
+it as *new* requires having looked. Twice now the looking happened only at submission
+time, which is too late to keep it out of a first draft and — so far — early enough to
+keep it out of a feed.
 
 ## 7. Reproduction
 
@@ -367,3 +416,22 @@ tools/freshfix/extract_scpt_strings.py parses the UTF-16BE literal table
 Requires `unicorn`, `capstone`, `cryptography`. The sample is never executed: Unicorn
 interprets the instructions, every libSystem call is serviced in Python, and the
 emulator has no filesystem, network or syscall access.
+
+## 8. Sources for §6
+
+- Moonlock, *AMOS backdoor and persistent access* — `com.finder.helper.plist`, `~/.agent`,
+  `~/.mainhelper`, the trojanised Ledger build, `isnimitz[.]com/zxc/app.zip`.
+  <https://moonlock.com/amos-backdoor-persistent-access>
+- IRU, *Atomic Stealer (AMOS) Returns: ClickFix, Trojanized Crypto Apps, and a New macOS
+  Persistence Mechanism* — the four-header set `user` / `BuildID` / `cl` / `cn`, the
+  `wusetail[.]com/zxc/{app,apptwo,appex}.zip` triple, `~/.logged`, `~/.pass`,
+  and `X-Chunk-*` chunking. <https://www.iru.com/blog/atomic-stealer-amos-returns>
+- SigmaHQ, `rules-emerging-threats/2025/Malware/Atomic-MacOS-Stealer/` — two rules by
+  Jason Phang Vern-Onn and Robbin Ooi Zhen Heng (Gen Digital), 2025-11-22, matching
+  `FileGrabber` with `/tmp`, `file=@/tmp/out.zip` with `user:` / `BuildID` / `cl: 0`, and
+  `/Library/LaunchDaemons/com.finder.helper.plist`. Built on the Trend Micro MDR analysis.
+- Trend Micro, *An MDR analysis of the AMOS stealer campaign*.
+  <https://www.trendmicro.com/en_us/research/25/i/an-mdr-analysis-of-the-amos-stealer-campaign.html>
+
+The `freshfix` packer internals and the analyst-tool blacklist were not found in any of
+these, which is what makes them the contribution here.

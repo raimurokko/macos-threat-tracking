@@ -184,6 +184,14 @@ submitted to MalwareBazaar; the family field in ThreatFox stays `unknown` until 
 independent verdict exists. Guessing here would put an unverified family name into
 machine-readable feeds, which is the failure mode this repository exists to avoid.
 
+> **Superseded 2026-08-07.** The payload was decrypted, and it matches published AMOS
+> analyses on strings that coincidence does not produce — the `app.zip` / `apptwo.zip` /
+> `appex.zip` triple, `/zxc/`, the four-header set, `FileGrabber/`, `.logged`. The
+> assessment is now **AMOS, confirmed, high confidence**, and the ThreatFox family field
+> can be set to `osx.amos`. See [`stage4_payload.md` §6](stage4_payload.md). The paragraph
+> above is kept because the reasoning was sound on the evidence then available; what
+> changed is the evidence.
+
 ## Front-end difference worth flagging
 
 Microsoft's cluster uses mass-registered look-alike domains on a `file<word><word>`
@@ -224,6 +232,8 @@ What this analysis actually added to the public feeds:
 | Clipboard payload | **New** as a shared artefact, though its hash was already the reference in two published YARA rules. |
 | `enter-pverif-code[.]info`, `ferncurrent14[.]com` | Already public since 2026-08-04. |
 | `user` / `BuildID` header pair | Already documented, see [12]. |
+| `cl` / `cn` headers, `/zxc/` paths, wallet replacement, LaunchDaemon persistence, `FileGrabber/`, `.logged` | Already documented since 2025-11-22. Recorded as new in the first draft of `stage4_payload.md`; corrected in its §6. |
+| The `freshfix` packer internals and the runtime analyst-tool blacklist | **New.** Not present in any published AMOS analysis found. |
 
 ## Detection added from this analysis
 

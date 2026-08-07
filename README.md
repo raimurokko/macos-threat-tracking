@@ -43,22 +43,33 @@ iocs/all.csv                     aggregated feed across campaigns, with status c
 
 | Date | Name | Delivery | Family | Status |
 |---|---|---|---|---|
-| 2026-08-04 | [Fake Cloudflare Turnstile](campaigns/2026-08-04-cloudflare-clickfix/writeup.md) | compromised DE school site | AMOS lineage, *assessed* | active |
+| 2026-08-04 | [Fake Cloudflare Turnstile](campaigns/2026-08-04-cloudflare-clickfix/writeup.md) | compromised DE school site | AMOS, **confirmed** | active |
 
-The family field says *assessed*, not confirmed, and the machine-readable feeds keep it at
-`unknown`. Four vendors describe the same terminal sequence resolving to AMOS, but one of
-them reports the same infrastructure also delivering MacSync. See
+The family field read *assessed* until 2026-08-07 and the machine-readable feeds kept it
+at `unknown`, because the evidence was chain shape only and one vendor reports the same
+infrastructure also delivering MacSync. See
 [REFERENCES.md](campaigns/2026-08-04-cloudflare-clickfix/REFERENCES.md) for how each claim
 maps to a source, including the ones that constrain it.
 
-**Update 2026-08-07 — the payload is no longer encrypted.** The stage-3 blob was broken by
-emulating the loader's own key derivation; see
-[stage4_payload.md](campaigns/2026-08-04-cloudflare-clickfix/stage4_payload.md). It did not
-settle the family question, and it raised the severity: besides stealing browser, wallet
-and cloud credentials, the payload installs **two root LaunchDaemons** disguised as Apple
-services and **replaces Ledger, Trezor and Exodus with attacker-supplied builds**. If you
-are triaging a host that ran this chain, treat it as a root compromise, not a data breach,
-and check the four persistence paths listed in that file first.
+**Update 2026-08-07 — the payload is no longer encrypted, and the family is settled.** The
+stage-3 blob was broken by emulating the loader's own key derivation; see
+[stage4_payload.md](campaigns/2026-08-04-cloudflare-clickfix/stage4_payload.md).
+
+The payload matches independently published AMOS analyses on details that coincidence does
+not produce — the `app.zip` / `apptwo.zip` / `appex.zip` archive triple, the `/zxc/` path
+segment, the `user` / `BuildID` / `cl` / `cn` header set, `FileGrabber/` and the `.logged`
+marker. **AMOS, confirmed.**
+
+It also raised the severity. Besides stealing browser, wallet and cloud credentials, the
+payload installs **two root LaunchDaemons** disguised as Apple services and **replaces
+Ledger, Trezor and Exodus with attacker-supplied builds**. Neither behaviour is new — both
+were published in November 2025 — but both change what you tell a victim. If you are
+triaging a host that ran this chain, treat it as a root compromise rather than a data
+breach, and check the four persistence paths in that file first.
+
+What is new here is the packer: `freshfix`, its key schedule, and the analyst-tool
+blacklist that only exists at runtime. §6 of that file separates the two carefully,
+because the first draft did not.
 
 ## Detection
 

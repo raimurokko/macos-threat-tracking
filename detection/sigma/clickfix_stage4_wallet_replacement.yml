@@ -20,12 +20,19 @@ description: >
   /zxc/appex.zip (Exodus); /zxc/kito and /zxc/mdw serve the LaunchDaemon payloads.
   Match on the sequence and on the /zxc/ path segment rather than on the hostname,
   which rotates.
+
+  Prior art: this behaviour and these exact archive names are documented AMOS activity
+  since 2025-11 (isnimitz[.]com/zxc/app.zip, wusetail[.]com/zxc/{app,apptwo,appex}.zip).
+  The archive names are stable across at least three unrelated hosts, which is what makes
+  the /zxc/ segment worth alerting on independently of the domain.
 author: Novum Analytica GmbH
 date: 2026-08-07
 references:
     - https://github.com/raimurokko/macos-threat-tracking
     - https://github.com/raimurokko/macos-threat-tracking/blob/main/campaigns/2026-08-04-cloudflare-clickfix/stage4_payload.md
     - https://attack.mitre.org/techniques/T1657/
+    - https://moonlock.com/amos-backdoor-persistent-access
+    - https://www.iru.com/blog/atomic-stealer-amos-returns
 logsource:
     category: process_creation
     product: macos

@@ -18,12 +18,20 @@ description: >
 
   A hit here means root-level persistence, not data theft. Treat the host as fully
   compromised.
+
+  Prior art: LaunchDaemon persistence in AMOS is documented since 2025-11 and SigmaHQ
+  already ships file_event_macos_malware_amos_persistence.yml, which matches the label
+  com.finder.helper and a ~/.helper drop. This rule exists because the labels differ per
+  build - this one imitates Apple service names instead - and because it matches on
+  process creation rather than file events. Run both.
 author: Novum Analytica GmbH
 date: 2026-08-07
 references:
     - https://github.com/raimurokko/macos-threat-tracking
     - https://github.com/raimurokko/macos-threat-tracking/blob/main/campaigns/2026-08-04-cloudflare-clickfix/stage4_payload.md
     - https://attack.mitre.org/techniques/T1543/004/
+    - https://moonlock.com/amos-backdoor-persistent-access
+    - https://www.iru.com/blog/atomic-stealer-amos-returns
 logsource:
     category: process_creation
     product: macos
