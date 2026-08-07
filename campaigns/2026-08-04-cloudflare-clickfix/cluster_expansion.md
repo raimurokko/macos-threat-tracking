@@ -129,9 +129,17 @@ Two consequences:
    autonomous system with the confirmed stage-1 gate, which is a materially stronger
    link. Still short of proof — an AS can host unrelated customers — but it moves the
    confidence from "suspected sibling" to "same hosting infrastructure".
-2. **There is something for legal process to act on.** A Cloudflare-fronted domain gives
-   an investigator nothing; an unproxied origin IP identifies a hosting provider that can
-   be served a subscriber-data request. For the two gates, that door is open.
+2. **There is something for legal process to act on.** An unproxied origin IP names the
+   hosting provider directly. For the two gates, that door is open without anyone having
+   to be asked.
+
+   **Corrected 2026-08-07.** This point originally began "A Cloudflare-fronted domain
+   gives an investigator nothing". That is wrong. Proxying does not remove the lead, it
+   relocates it: Cloudflare holds the origin IP for `ferncurrent14[.]com` together with
+   the account that configured it, and is a US company with a documented law-enforcement
+   request process. Ranked by realistic yield the proxied host is the *better* target
+   here — Cloudflare answers, whereas AS202412 is seven months old with no visible
+   legitimate business and may not. "Not visible to me" is not "not obtainable".
 
 **What this does *not* say.** Registry country fields are not locations. The cleanest way
 to see that is to collect them: for these same two origin IPs, four sources give four
