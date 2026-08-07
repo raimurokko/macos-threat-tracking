@@ -8,6 +8,11 @@ Everything here is published **TLP:CLEAR** — use it, fork it, feed it into you
 
 ---
 
+> **[Corrections](CORRECTIONS.md)** · [deutsch](CORRECTIONS.de.md) — five claims published
+> here and later withdrawn, with what found each one. Read it before relying on anything
+> in this repository, because it is the only honest measure of how much to verify
+> yourself.
+
 ## Why this exists
 
 ClickFix works because the victim runs the malware themselves. A fake verification
