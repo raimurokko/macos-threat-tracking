@@ -1,11 +1,16 @@
 # ClickFix macOS - campaign DANTE, 2026-08
 # Novum Analytica GmbH - TLP:CLEAR - https://github.com/raimurokko/macos-threat-tracking
 #
-# The two custom headers below are the most durable indicators in this campaign.
+# The custom headers below are the most durable indicators in this campaign.
 # "user" and "BuildID" are non-standard header names carrying campaign and build
 # identifiers, sent by the stage-2 script before any payload ran. Unlike the domains,
 # which rotate, these are emitted by the builder rather than by the hosting, and should
 # survive infrastructure changes.
+#
+# 2026-08-07, after decrypting the stage-3 blob: the pair is a quartet. The stage-4
+# payload emits "cl" and "cn" alongside them, and "X-Partial" on chunked uploads.
+# Rules 9000105-9000109 come from stage 4 - see campaigns/2026-08-04-cloudflare-clickfix/
+# stage4_payload.md. Detect on header NAMES, not on values, which were observed once.
 #
 # SIDs in the local range 9000000-9000999.
 
@@ -42,3 +47,64 @@ alert http $HOME_NET any -> $EXTERNAL_NET any ( \
     http.uri; content:"/DANTE/update"; endswith; \
     classtype:trojan-activity; \
     sid:9000104; rev:1; )
+
+# --- stage 4, from the decrypted payload (2026-08-07) -----------------------
+
+# The full header set the payload sends with every exfiltration POST. Four
+# non-standard names together is far more specific than the original pair.
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-4 exfil headers (user/BuildID/cl/cn)"; \
+    flow:established,to_server; \
+    http.method; content:"POST"; \
+    http.header_names; content:"|0d 0a|user|0d 0a|"; nocase; \
+    http.header_names; content:"|0d 0a|BuildID|0d 0a|"; nocase; \
+    http.header_names; content:"|0d 0a|cl|0d 0a|"; nocase; \
+    http.header_names; content:"|0d 0a|cn|0d 0a|"; nocase; \
+    classtype:trojan-activity; \
+    reference:url,github.com/raimurokko/macos-threat-tracking; \
+    sid:9000105; rev:1; )
+
+# Chunked variant. X-Partial is emitted only by the split-upload path.
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-4 chunked exfiltration (X-Partial)"; \
+    flow:established,to_server; \
+    http.method; content:"POST"; \
+    http.header_names; content:"|0d 0a|X-Partial|0d 0a|"; nocase; \
+    http.header_names; content:"|0d 0a|BuildID|0d 0a|"; nocase; \
+    classtype:data-loss; \
+    sid:9000106; rev:1; )
+
+# The archive upload itself: multipart POST to /contact carrying out.zip.
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-4 archive upload to /contact"; \
+    flow:established,to_server; \
+    http.method; content:"POST"; \
+    http.uri; content:"/contact"; endswith; \
+    http.request_body; content:"filename="; nocase; \
+    http.request_body; content:"out.zip"; nocase; distance:0; within:64; \
+    classtype:data-loss; \
+    sid:9000107; rev:1; )
+
+# Second-stage download paths. /zxc/ serves both LaunchDaemon binaries and the
+# trojanised wallet archives; the path segment is campaign-independent so far.
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-4 secondary payload fetch (/zxc/)"; \
+    flow:established,to_server; \
+    http.method; content:"GET"; \
+    http.uri; content:"/zxc/"; startswith; \
+    pcre:"/^\/zxc\/(kito|mdw|app\.zip|apptwo\.zip|appex\.zip)$/U"; \
+    classtype:trojan-activity; \
+    reference:url,github.com/raimurokko/macos-threat-tracking; \
+    sid:9000108; rev:1; )
+
+# Stage telemetry. Same endpoint family as the stage-2 paste beacon, but the
+# payload adds a stage= parameter naming the collection phase in progress.
+alert http $HOME_NET any -> $EXTERNAL_NET any ( \
+    msg:"NOVUM ClickFix macOS - stage-4 progress telemetry (stage= parameter)"; \
+    flow:established,to_server; \
+    http.method; content:"POST"; \
+    http.uri; content:"/api/metrics/run"; startswith; \
+    http.uri; content:"&stage="; distance:0; \
+    pcre:"/&stage=(init_session|messengers|credentials|browsers|wallets|resolve_auth|local_data|boot|started)/U"; \
+    classtype:trojan-activity; \
+    sid:9000109; rev:1; )

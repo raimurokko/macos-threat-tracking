@@ -1,0 +1,83 @@
+title: macOS ClickFix Stage-4 - Cryptocurrency Wallet Application Replaced From Attacker Archive
+id: 87bb9b7b-3cbd-4675-b926-b0a9048af0fb
+status: experimental
+description: >
+  Detects the wallet-substitution stage of the macOS ClickFix chain (campaign DANTE),
+  recovered by decrypting the stage-3 loader blob on 2026-08-07.
+
+  The payload does not merely read wallet data. For Ledger Wallet, Trezor Suite and
+  Exodus it terminates the running application, deletes the bundle from /Applications
+  as root using the password captured by its fake "System Preferences" dialog, downloads
+  a replacement archive from the operator's /zxc/ path, and unpacks it back into
+  /Applications with ditto. A .logged marker file prevents repeat replacement.
+
+  The result is an attacker-supplied build of a wallet application on the victim host.
+  Anything the user subsequently does in that application - seed entry, transaction
+  signing - happens inside code the operator controls. This is materially different
+  from credential theft and should be triaged as such.
+
+  Observed download paths are /zxc/app.zip (Ledger), /zxc/apptwo.zip (Trezor) and
+  /zxc/appex.zip (Exodus); /zxc/kito and /zxc/mdw serve the LaunchDaemon payloads.
+  Match on the sequence and on the /zxc/ path segment rather than on the hostname,
+  which rotates.
+author: Novum Analytica GmbH
+date: 2026-08-07
+references:
+    - https://github.com/raimurokko/macos-threat-tracking
+    - https://github.com/raimurokko/macos-threat-tracking/blob/main/campaigns/2026-08-04-cloudflare-clickfix/stage4_payload.md
+    - https://attack.mitre.org/techniques/T1657/
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_fetch_zxc:
+        Image|endswith: '/curl'
+        CommandLine|contains: '/zxc/'
+    selection_delete_wallet:
+        CommandLine|contains: 'sudo -S rm -r'
+        CommandLine|contains:
+            - '/Applications/Ledger Wallet.app'
+            - '/Applications/Trezor Suite.app'
+            - '/Applications/Exodus.app'
+    selection_unpack_to_applications:
+        Image|endswith: '/ditto'
+        CommandLine|contains|all:
+            - '-x -k'
+            - '/Applications'
+        CommandLine|contains:
+            - '/tmp/app.zip'
+            - '/tmp/apptwo.zip'
+            - '/tmp/appex.zip'
+    selection_kill_wallet:
+        Image|endswith: '/pkill'
+        CommandLine|contains:
+            - 'Ledger Wallet'
+            - 'Trezor Suite'
+            - 'Exodus'
+    selection_exfil_archive:
+        CommandLine|contains|all:
+            - 'ditto -c -k'
+            - '--sequesterRsrc'
+            - '/tmp/out.zip'
+    condition: 1 of selection_*
+fields:
+    - CommandLine
+    - ParentImage
+    - ParentCommandLine
+    - User
+falsepositives:
+    - >
+      Legitimate wallet updaters replace their own bundle, but do so from the vendor
+      domain under the user's own privileges, not via sudo -S with a piped password and
+      not from a /zxc/ path.
+    - Administrators removing a wallet application by hand.
+level: critical
+tags:
+    - attack.impact
+    - attack.t1657
+    - attack.persistence
+    - attack.t1554
+    - attack.collection
+    - attack.t1005
+    - attack.command_and_control
+    - attack.t1105

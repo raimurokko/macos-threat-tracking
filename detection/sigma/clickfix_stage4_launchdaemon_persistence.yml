@@ -1,0 +1,72 @@
+title: macOS ClickFix Stage-4 - Root LaunchDaemon Masquerading as Apple System Service
+id: 8f8a1f62-1c1c-453e-aaed-019c68b750b8
+status: experimental
+description: >
+  Detects the persistence stage of the macOS ClickFix chain (campaign DANTE), recovered
+  by decrypting the stage-3 loader blob on 2026-08-07.
+
+  The payload installs two independent root LaunchDaemons whose labels imitate genuine
+  Apple services - com.apple.accountsd.helper and com.apple.metadata.mds.worker. Neither
+  label exists on a clean macOS installation: the real services are com.apple.accountsd
+  and com.apple.metadata.mds, without the .helper / .worker suffix.
+
+  Payload binaries are staged in dot-prefixed directories under
+  ~/Library/Application Support/ that mimic the same service names, then copied to a
+  root-owned location and bootstrapped with the password captured by the payload's fake
+  "System Preferences" dialog. Because the escalation uses `sudo -S` with a phished
+  credential rather than an exploit, the sudo invocation itself is the observable.
+
+  A hit here means root-level persistence, not data theft. Treat the host as fully
+  compromised.
+author: Novum Analytica GmbH
+date: 2026-08-07
+references:
+    - https://github.com/raimurokko/macos-threat-tracking
+    - https://github.com/raimurokko/macos-threat-tracking/blob/main/campaigns/2026-08-04-cloudflare-clickfix/stage4_payload.md
+    - https://attack.mitre.org/techniques/T1543/004/
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_label:
+        CommandLine|contains:
+            - 'com.apple.accountsd.helper'
+            - 'com.apple.metadata.mds.worker'
+    selection_staging_dir:
+        CommandLine|contains:
+            - 'Application Support/.com.apple.accountsd'
+            - 'Application Support/.com.apple.metadata.mds'
+    selection_bootstrap:
+        CommandLine|contains|all:
+            - 'sudo'
+            - 'launchctl'
+            - 'bootstrap system'
+        CommandLine|contains: '/Library/LaunchDaemons/'
+    selection_sudo_stdin_chown:
+        CommandLine|contains|all:
+            - 'sudo -S'
+            - 'chown root:wheel'
+    selection_watchdog:
+        CommandLine|contains|all:
+            - 'launchctl asuser'
+            - 'stat -f'
+        CommandLine|contains: '/dev/console'
+    condition: 1 of selection_*
+fields:
+    - CommandLine
+    - ParentImage
+    - ParentCommandLine
+    - User
+falsepositives:
+    - >
+      Management tooling that legitimately bootstraps system daemons. Genuine tooling
+      does not pipe a password into sudo via -S, and does not use the .helper / .worker
+      label variants above.
+level: critical
+tags:
+    - attack.persistence
+    - attack.t1543.004
+    - attack.privilege_escalation
+    - attack.t1548.003
+    - attack.defense_evasion
+    - attack.t1036.005
