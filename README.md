@@ -27,13 +27,15 @@ campaigns/<date>-<short-name>/   one directory per campaign
     iocs.csv                     campaign indicators
     iocs.stix.json               STIX 2.1 bundle (MISP / OpenCTI import)
     payload_analysis.md          stage-2 and stage-3 analysis, where recovered
+    stage4_payload.md            the decrypted payload, where the blob was broken
     REFERENCES.md                sources, with what each supports and constrains
     samples/                     text artefacts only, never binaries
 detection/
     yara/                        file, clipboard-dump, shell-history and Mach-O rules
     sigma/                       process_creation (macOS), dns_query, proxy
-    suricata/                    network rules for the stage-2 telemetry beacon
+    suricata/                    network rules for stage-2 and stage-4 C2
 tools/                           safe capture and static triage toolkit
+    freshfix/                    emulation-based recovery of the stage-3 payload
 iocs/all.csv                     aggregated feed across campaigns, with status column
 ```
 
@@ -45,9 +47,18 @@ iocs/all.csv                     aggregated feed across campaigns, with status c
 
 The family field says *assessed*, not confirmed, and the machine-readable feeds keep it at
 `unknown`. Four vendors describe the same terminal sequence resolving to AMOS, but one of
-them reports the same infrastructure also delivering MacSync, and the payload itself is
-still encrypted. See [REFERENCES.md](campaigns/2026-08-04-cloudflare-clickfix/REFERENCES.md)
-for how each claim maps to a source, including the ones that constrain it.
+them reports the same infrastructure also delivering MacSync. See
+[REFERENCES.md](campaigns/2026-08-04-cloudflare-clickfix/REFERENCES.md) for how each claim
+maps to a source, including the ones that constrain it.
+
+**Update 2026-08-07 — the payload is no longer encrypted.** The stage-3 blob was broken by
+emulating the loader's own key derivation; see
+[stage4_payload.md](campaigns/2026-08-04-cloudflare-clickfix/stage4_payload.md). It did not
+settle the family question, and it raised the severity: besides stealing browser, wallet
+and cloud credentials, the payload installs **two root LaunchDaemons** disguised as Apple
+services and **replaces Ledger, Trezor and Exodus with attacker-supplied builds**. If you
+are triaging a host that ran this chain, treat it as a root compromise, not a data breach,
+and check the four persistence paths listed in that file first.
 
 ## Detection
 
@@ -60,6 +71,7 @@ for how each claim maps to a source, including the ones that constrain it.
 | `clickfix_fake_captcha_page.yar` | the lure page itself (clipboard write + Terminal instructions) | scan web root, CMS templates, DB dumps |
 | `clickfix_macos_stage3_loader.yar` | the stage-3 loader stub, by import combination and ad-hoc signature | **Mach-O scanning** |
 | `clickfix_macos_stage3_known_samples.yar` | known stage-3 hashes | **Mach-O scanning** |
+| `freshfix_payload_internals.yar` | packer key-schedule constants, the decrypted payload, and the runtime analyst-tool blacklist | **Mach-O, plaintext payload, and memory** |
 
 ```sh
 yara detection/yara/index.yar /path/to/scan
@@ -76,15 +88,23 @@ rule is the one to watch when tuning — it is defined partly by imports the bin
 without a sound. Still worth tuning all of them against your own estate before you page
 anyone.
 
-`detection/suricata/` — network rules keyed on the two non-standard request headers the
-stage-2 script sends before anything is downloaded. The rules match on the header *names*,
-not the observed values: the values were seen once, and one observation does not establish
-that a value survives a rebuild.
+One rule in `freshfix_payload_internals.yar` is **memory-scan only** and says so in its
+metadata. The analyst-tool blacklist it matches is XOR-encrypted per fragment inside the
+Mach-O and only assembles at runtime, so a file scan can never hit it. Point it at a live
+process or a core dump, not at disk.
+
+`detection/suricata/` — network rules keyed on the non-standard request headers this
+family emits. The rules match on the header *names*, not the observed values: the values
+were seen once, and one observation does not establish that a value survives a rebuild.
+Stage 2 sends `user` and `BuildID`; the decrypted stage-4 payload adds `cl`, `cn` and
+`X-Partial`, which is what rules 9000105–9000109 cover.
 
 `detection/sigma/` — process creation on macOS, plus DNS and proxy rules for the known
 infrastructure. The behavioural rule needs tuning before you alert on it: `curl | sh` is
 common enough in developer workflows to drown you in noise. A Homebrew/git-hooks filter
-is included as a starting point, not as a finished answer.
+is included as a starting point, not as a finished answer. The two `stage4` rules are the
+opposite case — root LaunchDaemons with forged Apple labels and wallet bundles replaced
+via `sudo -S` have no benign equivalent, and are set to `critical` accordingly.
 
 ## Tools
 
@@ -98,6 +118,11 @@ shell see it**. The rule the whole thing rests on: there is no pipe into `sh`, `
 - `capture_stage2.sh` — gate check, then fetch-to-file; aborts if the gate declines
 - `triage_payload.sh` — read-only static triage
 - `mitm_addon.py` — records lure pages and auto-extracts clipboard payloads
+- `freshfix/` — recovers the stage-3 payload by **emulating** the loader rather than
+  running it: Unicorn interprets the instructions, every libSystem call is serviced in
+  Python, and the emulator has no filesystem, network or syscall access. Three steps,
+  reproducible from the public sample alone. See
+  [`tools/freshfix/README.md`](tools/freshfix/README.md).
 - `grab_lure.sh` — fetches a lure page plus its external scripts; flags clipboard markers
 - `watch_clickfix.sh` — polls urlscan for new ClickFix submissions; capture is opt-in
 
