@@ -1,0 +1,14 @@
+[project]
+name = "freshfix-tools"
+version = "1.0.0"
+description = "Static recovery of the freshfix stage-3 loader payload (campaign DANTE). Emulation only - the sample is never executed."
+requires-python = ">=3.12"
+dependencies = [
+    "capstone>=5.0.9",
+    "cryptography>=45.0.0",
+    "unicorn>=2.1.0",
+]
+
+# Standalone scripts, not an installable package.
+[tool.uv]
+package = false
