@@ -120,7 +120,7 @@ is handed to the payload through environment variables rather than embedded in t
 
 ### Where the stealer actually lives
 
-`__DATA,__const` holds **69,632 bytes at entropy 7.9972** — indistinguishable from
+`__DATA_CONST,__const` holds **69,632 bytes at entropy 7.9972** — indistinguishable from
 random. The executable code in `__TEXT,__text` is 20,820 bytes. A ratio of 3.34 : 1
 ciphertext to code: the program is a delivery vehicle for its own data section.
 
@@ -129,9 +129,18 @@ opad `0x5c`, 64-byte block, 32-byte key), invoked per string with the plaintext 
 an argument. The disassembly shows the buffers being zero-filled immediately after use.
 `strings` on the file returns two library paths and nothing else.
 
-Recovering the payload would require emulating that decryption. Not attempted here; the
-chain-level evidence was sufficient for triage, and the sample is public for anyone who
-wants to go further.
+Recovering the payload would require emulating that decryption. It was attempted on
+2026-08-07 and it worked. Full account in [`stage4_payload.md`](stage4_payload.md); two
+statements on this page are superseded by it:
+
+- The working hypothesis that the payload was environmentally keyed to host identifiers —
+  which would have made static decryption impossible in principle — is **wrong**. The key
+  is a compile-time constant reached through obfuscated arithmetic, and equals the first
+  four bytes of the plaintext HKDF seed, byte-reversed.
+- "The loader is not the stealer" was right but understated the result. The payload is a
+  compiled AppleScript infostealer that also installs **two root LaunchDaemons** and
+  **replaces three wallet applications** with attacker-hosted builds. That is a different
+  finding from data theft, and it changes the remediation advice for an affected host.
 
 ---
 
@@ -196,6 +205,7 @@ infrastructure-side monitoring are not substitutes for each other.
 | Indicators | <https://otx.alienvault.com/pulse/6a74f0919f32840a8acc6a6f> |
 | Sigma rules | <https://github.com/SigmaHQ/sigma/pull/6205> (proposed upstream) |
 | Stage-2 script | <https://bazaar.abuse.ch/sample/40ecec3216ca8cfadbc82f7bd0262f2daeb39ec2547cef1756606104ad2e0563/> |
+| Stage-4 payload | decrypted 2026-08-07, SHA256 `95ab5a61a0970410ada36ba843e55e270f38cb8e2eebf79254434948e11c870f` — **not yet submitted** |
 
 ### What was already public, and what was not
 
@@ -225,6 +235,19 @@ What this analysis actually added to the public feeds:
 - `detection/suricata/clickfix_dante_c2.rules` — the `user`/`BuildID` header pair, the
   paste beacon, the `/curl/<hex>` fetch, and the stage-3 path.
 
+Added after the payload was decrypted (see [`stage4_payload.md`](stage4_payload.md)):
+
+- `detection/yara/freshfix_payload_internals.yar` — the packer's PBKDF2 iteration count
+  in both slices, the decrypted AppleScript, and the runtime analyst-tool blacklist
+  (memory scanning only).
+- `detection/sigma/clickfix_stage4_launchdaemon_persistence.yml` — root LaunchDaemons
+  with forged `com.apple.*` labels, installed via `sudo -S` with the phished password.
+- `detection/sigma/clickfix_stage4_wallet_replacement.yml` — Ledger, Trezor and Exodus
+  bundles deleted and replaced from `/zxc/*.zip`.
+- `detection/suricata/clickfix_dante_c2.rules`, SIDs 9000105–9000109 — the `cl`/`cn`
+  header pair, `X-Partial` chunked uploads, the `/contact` archive POST, `/zxc/` fetches
+  and the `stage=` telemetry parameter.
+
 ---
 
 See [REFERENCES.md](REFERENCES.md) for the full source list and how each claim maps to it.
@@ -249,12 +272,18 @@ The sample was never executed; it was decompressed to a non-executable copy and 
 | Encrypted blob | 69,632 bytes, entropy 7.9972, all 256 byte values present |
 | YARA rules in `detection/yara/` | both match the universal binary and both slices |
 
-Two corrections were made against the first draft of this analysis:
+Corrections made against earlier drafts of this analysis:
 
 - The import count was stated as seventeen. It is **sixteen** — and the list in the draft
   already contained sixteen entries, so the prose was simply counting wrong.
-- The encrypted blob was placed in `__DATA_CONST,__const`. It is in **`__DATA,__const`**.
-  `__DATA_CONST` exists in this binary but holds only a 14-byte `__cstring` section.
+- A correction dated 2026-08-06 moved the encrypted blob from `__DATA_CONST,__const` to
+  `__DATA,__const`. **That correction was itself wrong and has been reverted.**
+  `otool -l` on both slices puts the 69,632-byte `__const` section in the `__DATA_CONST`
+  segment; `__DATA` holds only `__la_symbol_ptr` (0x70), `__data` (8) and `__bss` (0x4a).
+  The 14-byte `__cstring` section that prompted the change is in `__TEXT`, not
+  `__DATA_CONST`.
 
-Not verified here, and marked as such: the HMAC-based string decryption routine at
-`+0x36d4`. That reading comes from disassembly which has not been independently repeated.
+Previously marked as unverified, now settled: the routine at `+0x36d4` **is** HMAC-SHA256.
+It was emulated against `hashlib` on three vectors with differing key and message lengths
+and matched on all three — see [`stage4_payload.md`](stage4_payload.md). It is no longer a
+reading of the disassembly.
