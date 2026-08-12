@@ -86,7 +86,7 @@ because the first draft did not.
 | `clickfix_macos_generic_exec.yar` | ClickFix execution shape (decode + pipe to shell) | hunting and triage |
 | `clickfix_fake_captcha_page.yar` | the lure page itself (clipboard write + Terminal instructions) | scan web root, CMS templates, DB dumps |
 | `clickfix_macos_stage3_loader.yar` | the stage-3 loader stub, by import combination and ad-hoc signature | **Mach-O scanning** |
-| `clickfix_macos_stage3_known_samples.yar` | known stage-3 hashes | **Mach-O scanning** |
+| `clickfix_macos_stage3_known_samples.yar` | the known stage-3 build, anchored on the SHA-256 of the decrypted payload that the loader stores for its own integrity check | **Mach-O scanning** |
 | `freshfix_payload_internals.yar` | packer key-schedule constants, the decrypted payload, and the runtime analyst-tool blacklist | **Mach-O, plaintext payload, and memory** |
 
 ```sh
@@ -94,8 +94,8 @@ yara detection/yara/index.yar /path/to/scan
 ```
 
 The first three are intended for shell history, clipboard dumps, browser cache, HTML
-artefacts and memory — **not** for Mach-O scanning. The two `stage3` rules are the
-exception: they **are** for Mach-O, and running them over text only wastes cycles.
+artefacts and memory — **not** for Mach-O scanning. The last three are the exception: they
+**are** for Mach-O, and running them over text only wastes cycles.
 
 The generic rule requires a decode step *and* a pipe, which keeps common developer
 one-liners out: `curl … | sh` from a rustup-style installer does not fire it. The loader
