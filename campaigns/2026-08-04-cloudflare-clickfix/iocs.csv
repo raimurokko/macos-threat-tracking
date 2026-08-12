@@ -1,18 +1,18 @@
 type,value,role,confidence,first_seen,tlp,notes
-domain,enter-pverif-code.info,c2-gating,high,2026-08-04,CLEAR,"Stage-1 Gating/Tracking. Antwortet einmalig mit 'ok'."
-url,http://enter-pverif-code.info/p/b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab,c2-gating,high,2026-08-04,CLEAR,"Opferindividuelles Token; Klartext-HTTP."
-domain,ferncurrent14.com,payload-host,high,2026-08-04,CLEAR,"Stage-2 Loader; Inhalt wird direkt nach zsh gepiped."
-url,https://ferncurrent14.com/curl/a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2,payload-host,high,2026-08-04,CLEAR,"Stage-2 Payload-URL (base64-verpackt in Stage 1)."
-token,b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab,victim-token,high,2026-08-04,CLEAR,"SHA256-foermiges Opfertoken im Stage-1-Pfad."
-token,a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2,payload-token,high,2026-08-04,CLEAR,"Pfadkomponente Stage 2."
-string,_7dcf=af7d6e2e6aa1,clipboard-marker,medium,2026-08-04,CLEAR,"Variablenpraefix im Clipboard-Kommando; Kampagnen-Session-Marker."
-string,_xr=$(curl -s,clipboard-marker,medium,2026-08-04,CLEAR,"Wegwerf-Variablenname Stage 1."
-behaviour,"eval \"$(printf '%s' '<base64>'|base64 -d)\"",execution,high,2026-08-04,CLEAR,"ClickFix-Ausfuehrungsmuster macOS."
-behaviour,"openssl base64 -d -A",obfuscation,medium,2026-08-04,CLEAR,"Zweite Dekodierschicht; openssl statt base64 zur Signatur-Umgehung."
-behaviour,"curl -s <url> | zsh",execution,high,2026-08-04,CLEAR,"Fileless Stage-2-Ausfuehrung, kein Schreibvorgang auf Platte."
+domain,enter-pverif-code.info,c2-gating,high,2026-08-04,CLEAR,Stage-1 Gating/Tracking. Antwortet einmalig mit 'ok'.
+url,http://enter-pverif-code.info/p/b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab,c2-gating,high,2026-08-04,CLEAR,Opferindividuelles Token; Klartext-HTTP.
+domain,ferncurrent14.com,payload-host,high,2026-08-04,CLEAR,Stage-2 Loader; Inhalt wird direkt nach zsh gepiped.
+url,https://ferncurrent14.com/curl/a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2,payload-host,high,2026-08-04,CLEAR,Stage-2 Payload-URL (base64-verpackt in Stage 1).
+token,b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab,victim-token,high,2026-08-04,CLEAR,SHA256-foermiges Opfertoken im Stage-1-Pfad.
+token,a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2,payload-token,high,2026-08-04,CLEAR,Pfadkomponente Stage 2.
+string,_7dcf=af7d6e2e6aa1,clipboard-marker,medium,2026-08-04,CLEAR,Variablenpraefix im Clipboard-Kommando; Kampagnen-Session-Marker.
+string,_xr=$(curl -s,clipboard-marker,medium,2026-08-04,CLEAR,Wegwerf-Variablenname Stage 1.
+behaviour,"eval ""$(printf '%s' '<base64>' | base64 -d)""",execution,high,2026-08-04,CLEAR,ClickFix-Ausfuehrungsmuster macOS.
+behaviour,openssl base64 -d -A,obfuscation,medium,2026-08-04,CLEAR,Zweite Dekodierschicht; openssl statt base64 zur Signatur-Umgehung.
+behaviour,curl -s <url> | zsh,execution,high,2026-08-04,CLEAR,"Fileless Stage-2-Ausfuehrung, kein Schreibvorgang auf Platte."
 ip-dst,178.16.52.101,c2-gating-origin,high,2026-08-06,CLEAR,"Origin-IP von enter-pverif-code.info. Cloudflare nur als DNS, A-Record ungeproxied. AS202412 OMEGATECH-AS."
-ip-dst,158.94.208.87,c2-gating-origin,medium,2026-08-06,CLEAR,"Origin-IP von makeverizyjar.info. Gleiches AS202412 wie das bestaetigte Gate."
-asn,AS202412,hosting,medium,2026-08-06,CLEAR,"OMEGATECH-AS - Omegatech LTD. AS registriert 2026-01-12. Beherbergt beide Gate-Origins. Registrierungsland ist weder Serverstandort noch Taeterherkunft."
+ip-dst,158.94.208.87,c2-gating-origin,medium,2026-08-06,CLEAR,Origin-IP von makeverizyjar.info. Gleiches AS202412 wie das bestaetigte Gate.
+asn,AS202412,hosting,medium,2026-08-06,CLEAR,OMEGATECH-AS - Omegatech LTD. AS registriert 2026-01-12. Beherbergt beide Gate-Origins. Registrierungsland ist weder Serverstandort noch Taeterherkunft.
 domain,grove-89.com,telemetry,high,2026-08-06,CLEAR,"Conversion beacon; POST fires when victim pastes, before payload runs"
 url,https://grove-89.com/api/metrics/run?event=pasted,telemetry,high,2026-08-06,CLEAR,Paste-through counter per build
 url,https://ferncurrent14.com/2kqYRM0DCrnyJgoS4gVLl_FHJRRdTUhGCbjyuYwpZ6c/DANTE/update,payload-host,high,2026-08-06,CLEAR,Stage-3 Mach-O; <path>/<campaign>/update shape
@@ -25,23 +25,23 @@ http-header,BuildID (header name),header-name,medium,2026-08-06,CLEAR,"Non-stand
 string,DANTE,campaign-marker,medium,2026-08-06,CLEAR,Campaign token in stage-3 URL path
 pattern,setup-[0-9a-f]{40},signing-identifier,medium,2026-08-06,CLEAR,"Ad-hoc code signature identifier, no Apple team ID"
 path,/tmp/helper,staging,medium,2026-08-06,CLEAR,Stage-3 drop location; 'update' also observed in this family
-sha256,95ab5a61a0970410ada36ba843e55e270f38cb8e2eebf79254434948e11c870f,payload,high,2026-08-07,CLEAR,"Stage-4 decrypted payload; run-only compiled AppleScript stealer"
+sha256,95ab5a61a0970410ada36ba843e55e270f38cb8e2eebf79254434948e11c870f,payload,high,2026-08-07,CLEAR,Stage-4 decrypted payload; run-only compiled AppleScript stealer
 md5,85ffd3ab8ed16a565046b0dd1dfe88a1,payload,high,2026-08-07,CLEAR,"Stage-4 decrypted payload, MD5 for reference"
-domain,grove53.com,c2,high,2026-08-07,CLEAR,"Stage-4 C2 hardcoded in the payload. Sibling of grove-89.com; same /api/metrics/run telemetry path."
+domain,grove53.com,c2,high,2026-08-07,CLEAR,Stage-4 C2 hardcoded in the payload. Sibling of grove-89.com; same /api/metrics/run telemetry path.
 ip-dst,161.35.146.120,c2,high,2026-08-07,CLEAR,"Stage-4 C2 hardcoded in the payload, plain HTTP."
-url,http://161.35.146.120/contact,exfiltration,high,2026-08-07,CLEAR,"Multipart POST of /tmp/out.zip"
-path,/zxc/kito,payload-path,high,2026-08-07,CLEAR,"LaunchDaemon binary. The /zxc/ path segment itself is documented AMOS infrastructure since 2025-11; the filename is variant-specific."
-path,/zxc/mdw,payload-path,high,2026-08-07,CLEAR,"LaunchDaemon binary for com.apple.metadata.mds.worker"
-path,/zxc/app.zip,payload-path,high,2026-08-07,CLEAR,"Trojanised Ledger Wallet.app archive. Already public: identical archive name documented for AMOS on isnimitz[.]com and wusetail[.]com."
+url,http://161.35.146.120/contact,exfiltration,high,2026-08-07,CLEAR,Multipart POST of /tmp/out.zip
+path,/zxc/kito,payload-path,high,2026-08-07,CLEAR,LaunchDaemon binary. The /zxc/ path segment itself is documented AMOS infrastructure since 2025-11; the filename is variant-specific.
+path,/zxc/mdw,payload-path,high,2026-08-07,CLEAR,LaunchDaemon binary for com.apple.metadata.mds.worker
+path,/zxc/app.zip,payload-path,high,2026-08-07,CLEAR,Trojanised Ledger Wallet.app archive. Already public: identical archive name documented for AMOS on isnimitz[.]com and wusetail[.]com.
 path,/zxc/apptwo.zip,payload-path,high,2026-08-07,CLEAR,"Trojanised Trezor Suite.app archive. Already public, see /zxc/app.zip."
 path,/zxc/appex.zip,payload-path,high,2026-08-07,CLEAR,"Trojanised Exodus.app archive. Already public, see /zxc/app.zip."
-path,/Library/LaunchDaemons/com.apple.accountsd.helper.plist,persistence,high,2026-08-07,CLEAR,"Root LaunchDaemon; real Apple service has no .helper suffix. Variant-specific label - documented AMOS builds use com.finder.helper."
-path,/Library/LaunchDaemons/com.apple.metadata.mds.worker.plist,persistence,high,2026-08-07,CLEAR,"Root LaunchDaemon; real Apple service has no .worker suffix"
-path,~/Library/Application Support/.com.apple.accountsd/AccountsHelper,persistence,high,2026-08-07,CLEAR,"Hidden staging dir and payload binary"
-path,~/Library/Application Support/.com.apple.metadata.mds/mdworker_shared,persistence,high,2026-08-07,CLEAR,"Hidden staging dir and payload binary"
-http-header,cl (header name),header-name,medium,2026-08-07,CLEAR,"Third non-standard header. NOT our discovery: matched literally as cl: 0 in a SigmaHQ AMOS rule since 2025-11-22. Detect on the NAME."
-http-header,cn (header name),header-name,medium,2026-08-07,CLEAR,"Fourth non-standard header. NOT our discovery: named as the campaign parameter in the IRU AMOS analysis. Detect on the NAME."
+path,/Library/LaunchDaemons/com.apple.accountsd.helper.plist,persistence,high,2026-08-07,CLEAR,Root LaunchDaemon; real Apple service has no .helper suffix. Variant-specific label - documented AMOS builds use com.finder.helper.
+path,/Library/LaunchDaemons/com.apple.metadata.mds.worker.plist,persistence,high,2026-08-07,CLEAR,Root LaunchDaemon; real Apple service has no .worker suffix
+path,~/Library/Application Support/.com.apple.accountsd/AccountsHelper,persistence,high,2026-08-07,CLEAR,Hidden staging dir and payload binary
+path,~/Library/Application Support/.com.apple.metadata.mds/mdworker_shared,persistence,high,2026-08-07,CLEAR,Hidden staging dir and payload binary
+http-header,cl (header name),header-name,medium,2026-08-07,CLEAR,Third non-standard header. NOT our discovery: matched literally as cl: 0 in a SigmaHQ AMOS rule since 2025-11-22. Detect on the NAME.
+http-header,cn (header name),header-name,medium,2026-08-07,CLEAR,Fourth non-standard header. NOT our discovery: named as the campaign parameter in the IRU AMOS analysis. Detect on the NAME.
 http-header,X-Partial (header name),header-name,medium,2026-08-07,CLEAR,"Chunked-upload marker, stage-4 exfiltration."
-string,FileGrabber/,staging,medium,2026-08-07,CLEAR,"Collection staging directory. Already public: matched in a SigmaHQ AMOS rule since 2025-11-22."
-token,vDFPDjjvSJDpItRN9EYMSf5pH6FKVYkuV1oQYIzDbp4,embedded-token,medium,2026-08-07,CLEAR,"43-char base64url token embedded in stage-4. One build only; stability across builds unestablished."
-token,IlAqO8RYp21zDy2y6s19oCASRxCini_G0BebbsfFtKg,embedded-token,medium,2026-08-07,CLEAR,"43-char base64url token embedded in stage-4. One build only; stability across builds unestablished."
+string,FileGrabber/,staging,medium,2026-08-07,CLEAR,Collection staging directory. Already public: matched in a SigmaHQ AMOS rule since 2025-11-22.
+token,vDFPDjjvSJDpItRN9EYMSf5pH6FKVYkuV1oQYIzDbp4,embedded-token,medium,2026-08-07,CLEAR,43-char base64url token embedded in stage-4. One build only; stability across builds unestablished.
+token,IlAqO8RYp21zDy2y6s19oCASRxCini_G0BebbsfFtKg,embedded-token,medium,2026-08-07,CLEAR,43-char base64url token embedded in stage-4. One build only; stability across builds unestablished.

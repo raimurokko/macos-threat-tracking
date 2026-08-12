@@ -15,6 +15,57 @@
       ]
     },
     {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "name": "ClickFix (fake CAPTCHA clipboard hijack), macOS variant",
+      "description": "Victim is shown a fake Cloudflare 'human verification' overlay instructing Cmd+Space -> Terminal -> Cmd+V -> Enter. The page writes an obfuscated shell command to the clipboard; the victim executes it under their own user context, bypassing Gatekeeper, XProtect and browser download controls.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1204.004",
+          "url": "https://attack.mitre.org/techniques/T1204/004/"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1059.004"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1027.013"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1105"
+        },
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1555.001"
+        }
+      ]
+    },
+    {
+      "type": "malware",
+      "spec_version": "2.1",
+      "id": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "AMOS (Atomic macOS Stealer)",
+      "description": "Commercially rented macOS infostealer. Confirmed for this campaign on 2026-08-07 after the stage-3 payload was decrypted: the app.zip/apptwo.zip/appex.zip archive triple under a /zxc/ path, the user/BuildID/cl/cn header set, FileGrabber/ and the .logged marker all match independently published analyses. Beyond credential theft it installs root LaunchDaemons and replaces Ledger, Trezor and Exodus with attacker-supplied builds.",
+      "malware_types": [
+        "spyware",
+        "trojan"
+      ],
+      "is_family": true,
+      "implementation_languages": [
+        "c",
+        "applescript"
+      ]
+    },
+    {
       "type": "indicator",
       "spec_version": "2.1",
       "id": "indicator--09fa2ac0-35f4-4b11-87b4-b315cefe861a",
@@ -110,6 +161,52 @@
     {
       "type": "indicator",
       "spec_version": "2.1",
+      "id": "indicator--04542d6f-17de-51d5-b051-02eed3485248",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "victim-token: b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab",
+      "description": "SHA256-foermiges Opfertoken im Stage-1-Pfad.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES 'b143d2530595a6b8a52694418e2edbe35405383d15e3397923ce0c747c25cfab']",
+      "valid_from": "2026-08-04T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "exploitation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--f18a5f41-9b90-5330-a460-1651ad8157ba",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload-token: a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2",
+      "description": "Pfadkomponente Stage 2.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES 'a7ec41c89a3dc6bf3de47264b4a3013134c7273dd1aa379859c2149b7517f0b2']",
+      "valid_from": "2026-08-04T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
       "id": "indicator--7c8b1e08-cbb8-49b9-bc10-8f3bacab316d",
       "created": "2026-08-04T14:42:00.000Z",
       "modified": "2026-08-04T14:42:00.000Z",
@@ -129,6 +226,29 @@
         }
       ],
       "confidence": 85
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--d650a590-38fa-5701-9e85-7301288e6bf2",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "clipboard-marker: _xr=$(curl -s",
+      "description": "Wegwerf-Variablenname Stage 1.",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES '_xr=\\\\$\\\\(curl\\\\ \\\\-s']",
+      "valid_from": "2026-08-04T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "exploitation"
+        }
+      ]
     },
     {
       "type": "indicator",
@@ -156,6 +276,29 @@
     {
       "type": "indicator",
       "spec_version": "2.1",
+      "id": "indicator--453edfd7-3adb-556e-8d76-a85f983319e0",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "obfuscation: openssl base64 -d -A",
+      "description": "Zweite Dekodierschicht; openssl statt base64 zur Signatur-Umgehung.",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[process:command_line MATCHES 'openssl base64 -d -A']",
+      "valid_from": "2026-08-04T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "defense-evasion"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
       "id": "indicator--8c56fd1a-eb6e-4e32-9d3c-f2e8c3f77118",
       "created": "2026-08-04T14:42:00.000Z",
       "modified": "2026-08-04T14:42:00.000Z",
@@ -175,108 +318,6 @@
         }
       ],
       "confidence": 85
-    },
-    {
-      "type": "attack-pattern",
-      "spec_version": "2.1",
-      "id": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "name": "ClickFix (fake CAPTCHA clipboard hijack), macOS variant",
-      "description": "Victim is shown a fake Cloudflare 'human verification' overlay instructing Cmd+Space -> Terminal -> Cmd+V -> Enter. The page writes an obfuscated shell command to the clipboard; the victim executes it under their own user context, bypassing Gatekeeper, XProtect and browser download controls.",
-      "external_references": [
-        {
-          "source_name": "mitre-attack",
-          "external_id": "T1204.004",
-          "url": "https://attack.mitre.org/techniques/T1204/004/"
-        },
-        {
-          "source_name": "mitre-attack",
-          "external_id": "T1059.004"
-        },
-        {
-          "source_name": "mitre-attack",
-          "external_id": "T1027.013"
-        },
-        {
-          "source_name": "mitre-attack",
-          "external_id": "T1105"
-        },
-        {
-          "source_name": "mitre-attack",
-          "external_id": "T1555.001"
-        }
-      ]
-    },
-    {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--b49df244-664f-4ddd-8cdd-6d691d7f34b9",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--09fa2ac0-35f4-4b11-87b4-b315cefe861a",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
-    },
-    {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--199ac423-c18b-43e8-9941-7dd4ce4671e4",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--8d6160a9-6e45-41eb-9276-d60b0916d152",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
-    },
-    {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--619b221c-5952-476f-8f6d-1c213475f1cc",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--a3d56b73-8a38-45a9-a286-563942c47a20",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
-    },
-    {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--67173d03-2e04-4d29-b934-b52ef1554fd4",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--c194c332-3ee4-410f-b560-65e80a1f661f",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
-    },
-    {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--be1f7da7-e0bb-4cd5-8100-5c7c376589e1",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--7c8b1e08-cbb8-49b9-bc10-8f3bacab316d",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
-    },
-    {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--50b733f5-f8e6-4afb-bcd5-3c5f2846f675",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--f10fc8bf-6033-4a04-a1a9-b89257d6fc0e",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
-    },
-    {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--eedf5744-89fc-4a55-9f88-4cf43e3bef1d",
-      "created": "2026-08-04T14:42:00.000Z",
-      "modified": "2026-08-04T14:42:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--8c56fd1a-eb6e-4e32-9d3c-f2e8c3f77118",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
     },
     {
       "type": "indicator",
@@ -302,16 +343,6 @@
       ]
     },
     {
-      "type": "relationship",
-      "spec_version": "2.1",
-      "id": "relationship--eaadb8f5-41d4-57fa-9c63-50aab609a7da",
-      "created": "2026-08-06T00:00:00.000Z",
-      "modified": "2026-08-06T00:00:00.000Z",
-      "relationship_type": "indicates",
-      "source_ref": "indicator--0d68d3c3-6a2f-52bc-bb09-9ecb5ab9223b",
-      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
-    },
-    {
       "type": "indicator",
       "spec_version": "2.1",
       "id": "indicator--297c8e98-202c-5243-ad86-f8f3fa4c0331",
@@ -335,14 +366,1443 @@
       ]
     },
     {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--8a74d037-49cd-553d-b283-ca8012106f49",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "hosting: AS202412",
+      "description": "OMEGATECH-AS - Omegatech LTD. AS registriert 2026-01-12. Beherbergt beide Gate-Origins. Registrierungsland ist weder Serverstandort noch Taeterherkunft.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[autonomous-system:number = 202412]",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--2ae2a83c-9506-5a65-b00b-1d09ec3d7b72",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "telemetry: grove-89.com",
+      "description": "Conversion beacon; POST fires when victim pastes, before payload runs",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'grove-89.com']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--dce9c7e9-38ff-5dcf-943b-819eee59ea2a",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "telemetry: https://grove-89.com/api/metrics/run?event=pasted",
+      "description": "Paste-through counter per build",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://grove-89.com/api/metrics/run?event=pasted']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--59674e80-ae51-5b02-9d2a-f040183af1ee",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload-host: https://ferncurrent14.com/2kqYRM0DCrnyJgoS4gVLl_FHJRRdTUhGCbjyuYwpZ6c/DANTE/upda",
+      "description": "Stage-3 Mach-O; <path>/<campaign>/update shape",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://ferncurrent14.com/2kqYRM0DCrnyJgoS4gVLl_FHJRRdTUhGCbjyuYwpZ6c/DANTE/update']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--2cea0a86-7d20-5b90-845b-1277287f3ab9",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload: 29be0f56275f051181ea3ec37ddc3d3807cde34cb65de855709fae0e13786a40",
+      "description": "Stage-3 universal Mach-O loader stub",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:hashes.'SHA-256' = '29be0f56275f051181ea3ec37ddc3d3807cde34cb65de855709fae0e13786a40']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--923fb861-eef3-5539-bf64-c00f143664ff",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload: 3873844f319ebbab08db2f27b6d7336a1d7d91ca65862d9470cd7300e4a3f207",
+      "description": "arm64 slice",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:hashes.'SHA-256' = '3873844f319ebbab08db2f27b6d7336a1d7d91ca65862d9470cd7300e4a3f207']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--cd63592d-0adb-5dc8-bc1f-1a687b549821",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload: 3710bb59c25a1c7eaba2ab471876f223ed5d358fc08e979a2ff1ebeedf03e431",
+      "description": "x86_64 slice",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:hashes.'SHA-256' = '3710bb59c25a1c7eaba2ab471876f223ed5d358fc08e979a2ff1ebeedf03e431']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--5079e27a-37d9-5e85-9b0f-248f231aa390",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload: ab477021780e553be4271cb34bb8394b",
+      "description": "Stage-3 universal Mach-O, MD5 for MalwareBazaar/YARAhub reference",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:hashes.MD5 = 'ab477021780e553be4271cb34bb8394b']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--88f7d330-3c0e-5d2b-9116-d1393ff54b44",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "header-name: user (header name)",
+      "description": "Non-standard request header emitted by stage 2. Detect on the NAME. The observed VALUE is recorded in payload_analysis.md but deliberately not listed as an indicator: it was seen exactly once, and one sample cannot establish that a value is stable across builds.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'user' LIKE '%']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--b0370493-930e-5465-8ef2-6644f26c4b20",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "header-name: BuildID (header name)",
+      "description": "Non-standard request header emitted by stage 2. Detect on the NAME. The observed VALUE is recorded in payload_analysis.md but deliberately not listed as an indicator: it was seen exactly once, and one sample cannot establish that a value is stable across builds.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'BuildID' LIKE '%']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--da460746-c1bf-5298-b5f1-68a5294d9a8c",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "campaign-marker: DANTE",
+      "description": "Campaign token in stage-3 URL path",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES 'DANTE']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--daa219a6-dd2d-5072-b9ea-eac092de38ff",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "signing-identifier: setup-[0-9a-f]{40}",
+      "description": "Ad-hoc code signature identifier, no Apple team ID",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name MATCHES 'setup-[0-9a-f]{40}']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "defense-evasion"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--863fc955-0f9b-52e5-88c4-0006c090f48e",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "staging: /tmp/helper",
+      "description": "Stage-3 drop location; 'update' also observed in this family",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'helper' AND file:parent_directory_ref.path = '/tmp']",
+      "valid_from": "2026-08-06T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "actions-on-objectives"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--b61cf46b-fd2e-563a-aa5f-197e91f8a12c",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload: 95ab5a61a0970410ada36ba843e55e270f38cb8e2eebf79254434948e11c870f",
+      "description": "Stage-4 decrypted payload; run-only compiled AppleScript stealer",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:hashes.'SHA-256' = '95ab5a61a0970410ada36ba843e55e270f38cb8e2eebf79254434948e11c870f']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--f3300c0c-aca4-5ea1-95b7-64d5271aaf1a",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload: 85ffd3ab8ed16a565046b0dd1dfe88a1",
+      "description": "Stage-4 decrypted payload, MD5 for reference",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:hashes.MD5 = '85ffd3ab8ed16a565046b0dd1dfe88a1']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--0a0813e1-44e6-54d4-9958-de53b52c9ad6",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "c2: grove53.com",
+      "description": "Stage-4 C2 hardcoded in the payload. Sibling of grove-89.com; same /api/metrics/run telemetry path.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'grove53.com']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--69207ccf-917a-5e4e-987d-a786afccd84a",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "c2: 161.35.146.120",
+      "description": "Stage-4 C2 hardcoded in the payload, plain HTTP.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[ipv4-addr:value = '161.35.146.120']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--c9e3d7b1-ef9d-58a4-813d-345422936f53",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "exfiltration: http://161.35.146.120/contact",
+      "description": "Multipart POST of /tmp/out.zip",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'http://161.35.146.120/contact']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "actions-on-objectives"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--702e7d35-7f97-5886-a37b-019672156180",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload-path: /zxc/kito",
+      "description": "LaunchDaemon binary. The /zxc/ path segment itself is documented AMOS infrastructure since 2025-11; the filename is variant-specific.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value MATCHES '/zxc/kito$']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--d1b9cbcd-e7f3-5736-8d82-c1468aee0d49",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload-path: /zxc/mdw",
+      "description": "LaunchDaemon binary for com.apple.metadata.mds.worker",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value MATCHES '/zxc/mdw$']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--fd73a41d-6a1c-5b97-8bef-b03511b7eddf",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload-path: /zxc/app.zip",
+      "description": "Trojanised Ledger Wallet.app archive. Already public: identical archive name documented for AMOS on isnimitz[.]com and wusetail[.]com.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value MATCHES '/zxc/app\\\\.zip$']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--1952af5c-b3d0-52e1-bc1c-1792ea1e3a52",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload-path: /zxc/apptwo.zip",
+      "description": "Trojanised Trezor Suite.app archive. Already public, see /zxc/app.zip.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value MATCHES '/zxc/apptwo\\\\.zip$']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--40ceefca-2251-5a25-a867-6b9e3286d5e3",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "payload-path: /zxc/appex.zip",
+      "description": "Trojanised Exodus.app archive. Already public, see /zxc/app.zip.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value MATCHES '/zxc/appex\\\\.zip$']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "delivery"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--28883d97-3bcf-5e4c-97cf-c009bbc47644",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "persistence: /Library/LaunchDaemons/com.apple.accountsd.helper.plist",
+      "description": "Root LaunchDaemon; real Apple service has no .helper suffix. Variant-specific label - documented AMOS builds use com.finder.helper.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'com.apple.accountsd.helper.plist' AND file:parent_directory_ref.path = '/Library/LaunchDaemons']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--d85fb4ca-d26d-56d2-995c-fa69d90d0269",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "persistence: /Library/LaunchDaemons/com.apple.metadata.mds.worker.plist",
+      "description": "Root LaunchDaemon; real Apple service has no .worker suffix",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'com.apple.metadata.mds.worker.plist' AND file:parent_directory_ref.path = '/Library/LaunchDaemons']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--cdbdc3c4-4283-58d1-a432-39753baf8031",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "persistence: ~/Library/Application Support/.com.apple.accountsd/AccountsHelper",
+      "description": "Hidden staging dir and payload binary",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'AccountsHelper' AND file:parent_directory_ref.path = '/Library/Application Support/.com.apple.accountsd']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--e83473d8-a73e-5871-8db1-4999616527f4",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "persistence: ~/Library/Application Support/.com.apple.metadata.mds/mdworker_shared",
+      "description": "Hidden staging dir and payload binary",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'mdworker_shared' AND file:parent_directory_ref.path = '/Library/Application Support/.com.apple.metadata.mds']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 85,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "installation"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--cef24129-de83-5103-9bcc-735f1c4c6e8f",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "header-name: cl (header name)",
+      "description": "Third non-standard header. NOT our discovery: matched literally as cl: 0 in a SigmaHQ AMOS rule since 2025-11-22. Detect on the NAME.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'cl' LIKE '%']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--3d9720be-c5fd-5ded-8ece-f3dbaad10f66",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "header-name: cn (header name)",
+      "description": "Fourth non-standard header. NOT our discovery: named as the campaign parameter in the IRU AMOS analysis. Detect on the NAME.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'cn' LIKE '%']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--16e2c404-7ed1-5e1a-a33f-7c211fbf0313",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "header-name: X-Partial (header name)",
+      "description": "Chunked-upload marker, stage-4 exfiltration.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'X-Partial' LIKE '%']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--1ed78a8d-0b2c-52b7-847b-6984d57d8505",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "staging: FileGrabber/",
+      "description": "Collection staging directory. Already public: matched in a SigmaHQ AMOS rule since 2025-11-22.",
+      "indicator_types": [
+        "anomalous-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES 'FileGrabber/']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "actions-on-objectives"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--1dfe80a6-752d-5637-8313-43112530225c",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "embedded-token: vDFPDjjvSJDpItRN9EYMSf5pH6FKVYkuV1oQYIzDbp4",
+      "description": "43-char base64url token embedded in stage-4. One build only; stability across builds unestablished.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES 'vDFPDjjvSJDpItRN9EYMSf5pH6FKVYkuV1oQYIzDbp4']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--9f05f4ff-8f81-5325-a4fa-e586ee39d976",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "created_by_ref": "identity--743549b0-8df5-487c-9f3b-b93228647e4a",
+      "name": "embedded-token: IlAqO8RYp21zDy2y6s19oCASRxCini_G0BebbsfFtKg",
+      "description": "43-char base64url token embedded in stage-4. One build only; stability across builds unestablished.",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[artifact:payload_bin MATCHES 'IlAqO8RYp21zDy2y6s19oCASRxCini_G0BebbsfFtKg']",
+      "valid_from": "2026-08-07T00:00:00.000Z",
+      "confidence": 50,
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "command-and-control"
+        }
+      ]
+    },
+    {
       "type": "relationship",
       "spec_version": "2.1",
-      "id": "relationship--e1fc7450-5f3f-532e-a5ee-59f9ac200cfe",
+      "id": "relationship--8119f331-1372-55e6-9305-ae347383ab14",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--09fa2ac0-35f4-4b11-87b4-b315cefe861a",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--993694c1-4ef8-5361-8f1f-3884b151ab89",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--8d6160a9-6e45-41eb-9276-d60b0916d152",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--92118343-a08c-5cca-9e2a-64c3de48d4b5",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--a3d56b73-8a38-45a9-a286-563942c47a20",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--3b380006-29d3-5ba4-b366-0c889e15b40c",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--c194c332-3ee4-410f-b560-65e80a1f661f",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--a5da346e-1016-505f-a09f-e41f7db9b9bc",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--04542d6f-17de-51d5-b051-02eed3485248",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--a060db62-f625-59df-8131-ab9aba0c0eff",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--f18a5f41-9b90-5330-a460-1651ad8157ba",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--b782f953-7845-51e8-bf2d-9e9fb398ef6c",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--7c8b1e08-cbb8-49b9-bc10-8f3bacab316d",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--d2e61890-6378-54b9-b75b-238af8c06adc",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--d650a590-38fa-5701-9e85-7301288e6bf2",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--7fbbc4d6-9f0c-5b97-a480-432782dc559f",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--f10fc8bf-6033-4a04-a1a9-b89257d6fc0e",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--c81330ad-2677-5daf-bd7a-9f0e8719a0bf",
+      "created": "2026-08-04T00:00:00.000Z",
+      "modified": "2026-08-04T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--453edfd7-3adb-556e-8d76-a85f983319e0",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--59798f60-429e-5d71-9236-ffbd5096a87e",
+      "created": "2026-08-04T14:42:00.000Z",
+      "modified": "2026-08-04T14:42:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--8c56fd1a-eb6e-4e32-9d3c-f2e8c3f77118",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--c1a7d907-3934-5e71-9a1b-edb45c006795",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--0d68d3c3-6a2f-52bc-bb09-9ecb5ab9223b",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--452a8960-2185-53f9-abd2-224b1936b8ec",
       "created": "2026-08-06T00:00:00.000Z",
       "modified": "2026-08-06T00:00:00.000Z",
       "relationship_type": "indicates",
       "source_ref": "indicator--297c8e98-202c-5243-ad86-f8f3fa4c0331",
       "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--fb22b8fd-1a1f-53b6-95b1-1bbfd2eaf842",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--8a74d037-49cd-553d-b283-ca8012106f49",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--ebf684f8-08f2-5e9f-9989-0e8265b3933e",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--2ae2a83c-9506-5a65-b00b-1d09ec3d7b72",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--c20e8ca8-d32c-50bc-9508-13c7a50a3cff",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--dce9c7e9-38ff-5dcf-943b-819eee59ea2a",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--161dce6d-9f11-53e8-aef4-01bf66af435a",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--59674e80-ae51-5b02-9d2a-f040183af1ee",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--2c182f41-ab1e-52a4-a0b2-062984fc2757",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--2cea0a86-7d20-5b90-845b-1277287f3ab9",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--8286b5b6-b030-5212-89dc-e5ecac4f03ec",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--2cea0a86-7d20-5b90-845b-1277287f3ab9",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--a4defe0f-e74a-5ca5-b194-31019dfa300d",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--923fb861-eef3-5539-bf64-c00f143664ff",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--0bad48e1-33d3-5720-96d3-5f50f95352c6",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--923fb861-eef3-5539-bf64-c00f143664ff",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--9309279e-47fd-52c2-99c3-54cee452c2df",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--cd63592d-0adb-5dc8-bc1f-1a687b549821",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--bf01ca54-36c0-53ff-81c0-a17eadf8c952",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--cd63592d-0adb-5dc8-bc1f-1a687b549821",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--3bc64044-99aa-53c2-b019-505a7c68fc6a",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--5079e27a-37d9-5e85-9b0f-248f231aa390",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--a8ee220f-83f2-5412-ae62-f82361bd8be8",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--5079e27a-37d9-5e85-9b0f-248f231aa390",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--8085b098-6b58-58ea-87bb-c85f805455e0",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--88f7d330-3c0e-5d2b-9116-d1393ff54b44",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--c39f57e4-9fc1-5e57-a685-142c3e42c31f",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--b0370493-930e-5465-8ef2-6644f26c4b20",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--46a77a9d-f1d8-53e7-ad05-58859111e86d",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--da460746-c1bf-5298-b5f1-68a5294d9a8c",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--83b9af2e-58c0-5b53-89df-6d09134ec979",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--daa219a6-dd2d-5072-b9ea-eac092de38ff",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--4f7ba2eb-04fb-5eab-9b1f-11c92760db54",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--863fc955-0f9b-52e5-88c4-0006c090f48e",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--aac50098-fca8-5165-8e61-895d448eb9c3",
+      "created": "2026-08-06T00:00:00.000Z",
+      "modified": "2026-08-06T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--863fc955-0f9b-52e5-88c4-0006c090f48e",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--d5f190da-a286-5992-ab77-ac9a4f038ffd",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--b61cf46b-fd2e-563a-aa5f-197e91f8a12c",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--9ee1b3bc-ab10-5a76-9e5e-a3a37cd3fd11",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--b61cf46b-fd2e-563a-aa5f-197e91f8a12c",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--436f20f4-996c-59b5-988c-55711f43fe5f",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--f3300c0c-aca4-5ea1-95b7-64d5271aaf1a",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--f0c991db-561d-56dd-9a60-cc0bb3a20a29",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--f3300c0c-aca4-5ea1-95b7-64d5271aaf1a",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--9c83492a-2e48-593d-9cec-0d3454ed6f89",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--0a0813e1-44e6-54d4-9958-de53b52c9ad6",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--ff11c4d3-0155-588b-9843-b35da6bda789",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--0a0813e1-44e6-54d4-9958-de53b52c9ad6",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--2bcb079b-24f2-5bc6-abc1-0b2404946186",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--69207ccf-917a-5e4e-987d-a786afccd84a",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--362c0491-617e-5d54-87d8-8d6f75e29f5e",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--69207ccf-917a-5e4e-987d-a786afccd84a",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--97d05a2e-4ac3-5330-a131-555c503b229d",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--c9e3d7b1-ef9d-58a4-813d-345422936f53",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--1d24696c-1517-5b5b-a1af-0bbbc3cc753d",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--c9e3d7b1-ef9d-58a4-813d-345422936f53",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--60262862-762b-5d6d-b4ec-5f2a7fb1e49d",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--702e7d35-7f97-5886-a37b-019672156180",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--2e81c4a8-7867-5fde-8372-4fc4ffa2edb4",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--702e7d35-7f97-5886-a37b-019672156180",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--96b8dc01-bbdd-587e-a2f9-389e0e286a7b",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--d1b9cbcd-e7f3-5736-8d82-c1468aee0d49",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--077946d6-6ee5-59cf-8d36-1f754aa4b748",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--d1b9cbcd-e7f3-5736-8d82-c1468aee0d49",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--3a4e52f1-1d1c-5da0-95ee-0a79b65876ff",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--fd73a41d-6a1c-5b97-8bef-b03511b7eddf",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--b46cebf0-d3ad-523c-a12f-d113197d0d5c",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--fd73a41d-6a1c-5b97-8bef-b03511b7eddf",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--4de10527-9749-5e2d-b8f1-3dfe5eb5fa42",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--1952af5c-b3d0-52e1-bc1c-1792ea1e3a52",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--a0b273a1-594e-5801-8219-1e287960c29e",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--1952af5c-b3d0-52e1-bc1c-1792ea1e3a52",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--caa390bc-cd4e-54db-8cdd-593fe54a2179",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--40ceefca-2251-5a25-a867-6b9e3286d5e3",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--56bc0e36-85dd-59f6-bea2-5cfdf64920bc",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--40ceefca-2251-5a25-a867-6b9e3286d5e3",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--d11a137f-0fd1-53e5-a350-65194ec67ef8",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--28883d97-3bcf-5e4c-97cf-c009bbc47644",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--a3f90c66-c6ff-5f7b-a460-45e0633736cb",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--28883d97-3bcf-5e4c-97cf-c009bbc47644",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--6453c90f-c4de-5a3a-9a17-1a636dae0d50",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--d85fb4ca-d26d-56d2-995c-fa69d90d0269",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--e50a871c-edff-554d-a719-c4be55cf7eed",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--d85fb4ca-d26d-56d2-995c-fa69d90d0269",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--21216234-f526-55c1-854c-f3ea6c13f7f0",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--cdbdc3c4-4283-58d1-a432-39753baf8031",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--df32c347-9765-5df4-a204-1e43f0c84daa",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--cdbdc3c4-4283-58d1-a432-39753baf8031",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--ff57a01e-25c9-590c-9cf0-46ed44e7ecc4",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--e83473d8-a73e-5871-8db1-4999616527f4",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--25bc5d36-be24-5b4d-b419-659dad68ddcd",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--e83473d8-a73e-5871-8db1-4999616527f4",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--14100a6c-a883-5cd4-b0c6-85ed8929c532",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--cef24129-de83-5103-9bcc-735f1c4c6e8f",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--a24a78e6-3dcd-5309-8542-e151bc64a2b4",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--3d9720be-c5fd-5ded-8ece-f3dbaad10f66",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--260bc166-96f4-5a82-a71b-6671107fb85c",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--16e2c404-7ed1-5e1a-a33f-7c211fbf0313",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--83a7d8fb-e506-5377-929f-4cea7219132a",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--1ed78a8d-0b2c-52b7-847b-6984d57d8505",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--9a6c8958-48d6-55ec-9cfc-f3ee7a938920",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--1ed78a8d-0b2c-52b7-847b-6984d57d8505",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--dd7cea73-6715-5ea6-a894-3b59d79c3d1e",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--1dfe80a6-752d-5637-8313-43112530225c",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--c416dcbd-1138-5b7f-a110-16acc4aebb22",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--1dfe80a6-752d-5637-8313-43112530225c",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--2c51829c-a3f3-51e1-89c4-4427c2e25bae",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--9f05f4ff-8f81-5325-a4fa-e586ee39d976",
+      "target_ref": "attack-pattern--5e700096-6c66-4730-8db7-a348dbb768a1"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--c3fd278c-5604-5e02-961a-083bfcd5bfc4",
+      "created": "2026-08-07T00:00:00.000Z",
+      "modified": "2026-08-07T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--9f05f4ff-8f81-5325-a4fa-e586ee39d976",
+      "target_ref": "malware--d0581c9c-1107-551e-9d0d-97d1f3cdf1a5"
     }
   ]
 }
